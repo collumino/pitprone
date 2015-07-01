@@ -7,7 +7,7 @@ class CreateIngredients < ActiveRecord::Migration
       t.decimal :price
       t.boolean :is_default
       t.boolean :vegan
-
+      t.string :category
       t.timestamps null: false
     end
   end

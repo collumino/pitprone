@@ -1,0 +1,817 @@
+ingredients:
+  - name: 'Ananas'
+    price: 1.20
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: true
+    category: Sonstiges
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Artischocken in Kräuteröl'
+    price: 1.80
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Bacon'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: false
+      phophate: true
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Balsamico-Creme'
+    price: 0.80
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Basilikum'
+    price: 0.80
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Basilikum-Pesto'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: true
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Broccoli'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Champignons'
+    price: 1.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Cherrytomaten'
+    price: 1.25
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Chilisalami'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: true
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Curry-Sauce'
+    price: 0.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'Saucen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Dänische Gurken'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Dänische Remoulade'
+    price: 0.50
+    properties:
+      sugar: true
+      antioxidant: true
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'Saucen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Ei, gekocht'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Frühlingszwiebeln'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Garnelen, Knob.-Öl mariniert'
+    price: 2.00
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'Meeresprodukte'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Getrocknete Tomaten'
+    price: 0.80
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Grana Padano D.O.P.'
+    price: 0.80
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: Sonstiges
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Grüner Spargel'
+    price: 2.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Hinterschinken'
+    price: 1.00
+    properties:
+      sugar: true
+      antioxidant: true
+      dye: true
+      conserve: true
+      phophate: true
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Hirtenkäse'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: Sonstiges
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Hähnchenbrust'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: false
+      phophate: true
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Jalapeños (scharf)'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Knoblauch'
+    price: 0.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Mais'
+    price: 0.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Mozzarella'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: Sonstiges
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Oliven'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Paprika'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Peperoni mild'
+    price: 1.20
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Peperoni rot frisch'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Pizza Chilis'
+    price: 1.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: true
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Pute'
+    price: 1.50
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Rinderhack'
+    price: 1.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Rindersteakstreifen'
+    price: 2.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Rote Zwiebeln'
+    price: 0.80
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Rucola'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Röstzwiebeln'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Salami'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: true
+      conserve: false
+      phophate: true
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Sauce hollandaise'
+    price: 1.00
+    properties:
+      sugar: true
+      antioxidant: true
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'Saucen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Serranoschinken'
+    price: 1.50
+    properties:
+      sugar: false
+      antioxidant: true
+      dye: false
+      conserve: false
+      phophate: true
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Sonnenblumenkerne'
+    price: 0.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Spinat'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'vorverarbeitete Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Steakpfeffer'
+    price: 0.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: Sonstiges
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Thunfisch'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'Meeresprodukte'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Sardellen'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: true
+      phophate: false
+    is_default: false
+    vegan: false
+    category: 'Meeresprodukte'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Tomaten'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'frische Beilagen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Tomatenketchup'
+    price: 0.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: false
+    vegan: true
+    category: 'Saucen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Würstchen'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: true
+      conserve: true
+      phophate: true
+    is_default: false
+    vegan: false
+    category: Fleischprodukte
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Tomatensauce'
+    price: 1.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: true
+    vegan: true
+    category: 'Saucen'
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Käse'
+    price: 1.50
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: true
+    vegan: false
+    category: Sonstiges
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz
+  - name: 'Teig'
+    price: 5.00
+    properties:
+      sugar: false
+      antioxidant: false
+      dye: false
+      conserve: false
+      phophate: false
+    is_default: true
+    vegan: false
+    category: Sonstiges
+    placeholder:
+      pl0:
+      pl2:
+      pl3:
+    placeholder1: xyz

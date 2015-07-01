@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150701085322) do
     t.decimal  "price",                            precision: 10
     t.boolean  "is_default",         limit: 1
     t.boolean  "vegan",              limit: 1
+    t.string   "category",           limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
   end
@@ -63,10 +64,11 @@ ActiveRecord::Schema.define(version: 20150701085322) do
   add_index "pizza_items", ["pizza_id"], name: "index_pizza_items_on_pizza_id", using: :btree
 
   create_table "pizzas", force: :cascade do |t|
-    t.integer  "order_id",   limit: 4
-    t.decimal  "total",                precision: 10
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.integer  "order_id",    limit: 4
+    t.decimal  "total",                  precision: 10
+    t.float    "size_factor", limit: 24,                null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   add_index "pizzas", ["order_id"], name: "index_pizzas_on_order_id", using: :btree

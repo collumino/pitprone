@@ -1,0 +1,31 @@
+header{
+  .navbar{
+    height: 15vh;
+    margin: 0;
+  }
+}
+main{
+  margin: 0;
+  padding: 0;
+  #presenter{
+    .item {
+      height: 85vh;
+    }
+    #select{
+      .row > div{
+        text-align: center;
+        &.selected{
+          background-color: rgba(255,255,255,.5);
+        }
+
+      }
+    }
+    .carousel-indicators{
+      li{
+        width: auto;
+        text-indent: 0;
+        border: none;
+      }
+    }
+  }
+}

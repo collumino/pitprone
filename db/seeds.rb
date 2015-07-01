@@ -1,9 +1,20 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+require 'yaml'
+
+user = User.create! :name => 'Admin', :email => 'admin@pizza.ch', :password => '123123123', :password_confirmation => '123123123'
+# user.confirm!
+
+data = YAML.load_file('db/zutaten.yml')
+data.each{|key,values|
+  values.each{|value|
+    value.reject!{|k,v| k.match(%r{placeholder}).present? }
+    properties = value.delete('properties')
+
+    ingredient= Ingredient.new(value)
+    ingredient.property = ( Property.where(properties).any? ? Property.where(properties).first : Property.create(properties) )
+    ingredient.save
+  }
+}
+
 user = CreateAdminService.new.call
 puts 'CREATED ADMIN USER: ' << user.email
+

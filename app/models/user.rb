@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
 
   has_one :address
+  has_many :orders
 
   def set_default_role
     self.role ||= :user

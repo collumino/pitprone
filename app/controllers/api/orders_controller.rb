@@ -1,5 +1,5 @@
 class Api::OrdersController < ActionController::API
-  before_action :set_order, only: [:show, :update, :destroy]
+  before_filter :authenticate_order_from_token!
 
   # GET /orders
   # GET /orders.json
@@ -18,12 +18,14 @@ class Api::OrdersController < ActionController::API
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
-
-    if @order.save
-      render json: @order, status: :created, location: @order
-    else
-      render json: @order.errors, status: :unprocessable_entity
+    Pizza.transaction do
+      pizza = Pizza.new( size_factor: Pizza.weight(params[:size]) )
+      @order.pizzas << pizza if pizza.prepare
+      if @order.save
+        render json: pizza.size_factor, status: :created
+      else
+        render json: @order.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -49,11 +51,19 @@ class Api::OrdersController < ActionController::API
 
   private
 
-    def set_order
-      @order = Order.find(params[:id])
-    end
+  def authenticate_order_from_token!
+    user_email = request.headers['HTTP_X_USER'] || params[:user_email]
+    user       = user_email && User.find_by_email(user_email)
 
-    def order_params
-      params.require(:order).permit(:user_id, :total, :state)
+    # Notice how we use Devise.secure_compare to compare the token
+    # in the database with the token given in the params, mitigating
+    # timing attacks.
+
+    if user && Devise.secure_compare(user.authentication_token, request.headers['HTTP_X_TOKEN'] || params[:user_token])
+      sign_in user, store: false
+      @order = user.orders.last if user.orders.any?
+      @order ||= Order.new( user: user )
     end
+  end
+
 end
