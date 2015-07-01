@@ -43,6 +43,9 @@ main{
         width: auto;
         text-indent: 0;
         border: none;
+        &.locked{
+          opacity: .5;
+        }
       }
     }
   }

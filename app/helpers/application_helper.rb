@@ -43,7 +43,16 @@ module ApplicationHelper
   end
 
   def ingredient_is_selected?(ingredient)
+    return false unless current_pizza
     current_pizza.pizza_items.collect{|pit| pit.ingredient }.include?(ingredient)
+  end
+
+  def configure_links_to
+    current_pizza && current_pizza.size ? { data: { target: '#presenter' , slide: { to: '1' }} } : { class: 'locked' }
+  end
+
+  def checkout_links_to
+    current_pizza && current_pizza.total > 0 ?  {data: { target: '#presenter' , slide: { to: '2' }}} : { class: 'locked' }
   end
 
 end
