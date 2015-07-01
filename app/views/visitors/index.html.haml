@@ -14,8 +14,8 @@
               .row
                 .col-lg-3.col-md-4.col-sm-6.col-xs-12.well.header{ id: id , class: ( index == 0 ? 'selected' : '')}
                   = link_to(key, '#')
-                - list.each do |ingredient|
-                  .col-lg-3.col-md-4.col-sm-6.col-xs-12{ class: ingredient.tags.join(' ') }
+                - list.each_with_index do |ingredient, sec_index|
+                  .col-lg-3.col-md-4.col-sm-6.col-xs-12{ class: ingredient.tags.join(' '), id: "node#{index}-#{sec_index}" }
                     = generate_ingredient_link(ingredient, index > 0 )
     .item#checkout
       .carousel_body

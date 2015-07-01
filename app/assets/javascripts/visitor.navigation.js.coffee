@@ -4,8 +4,11 @@ PitProneClient.visitor = {}
 
 class Navigation
   constructor: ->
+    @ingredient_collector = []
     @size_parent = $('#get_size')
     @addon_parent = $('.ingredient_list')
+    for selected in @addon_parent.find('a.selected')
+      @ingredient_collector.push($(selected).parent().attr('id'))
 
   catchTrigger: ->
     @size_parent.find('a').on('click', (e) =>
@@ -21,8 +24,6 @@ class Navigation
     @addon_parent.find('a.selectable').on('click', (e) =>
       e.preventDefault()
       @fireAddOnRequest($(e.currentTarget))
-      e.stopPropagation()
-
       @triggerMasterNavigation()
     )
 
@@ -50,14 +51,15 @@ class Navigation
 
   fireAddOnRequest: (elm) ->
     ingredient_name = elm.find('span.text').html()
+    my_id = elm.parent().attr('id')
+    found_pos = @ingredient_collector.indexOf(elm.parent().attr('id'))
 
-    if elm.data('ref')
-      url = elm.data('ref')
-      type='DELETE'
-    else
+    if found_pos < 0
       url = @addon_parent.data('ref')
       type='PATCH'
-
+    else
+      url = elm.data('ref')
+      type='DELETE'
 
     $.ajax({
       type: type,
@@ -71,18 +73,19 @@ class Navigation
           if ingredient_name == msg.added.name
             elm.addClass('selected')
             $('<span class="glyphicon glyphicon-remove-circle"></span>').insertBefore(elm.find('span.text'))
-            elm.attr({'data-http-verb': 'delete', 'data-ref': '/api/del_ingredient', 'data-confirm': 'wollen Sie diese Beilage entfernen ?'})
+            elm.attr({'data-ref': '/api/del_ingredient', 'data-confirm': 'wollen Sie diese Beilage entfernen ?'})
+            @ingredient_collector.push(my_id)
 
         if typeof msg.deleted != 'undefined'
           if ingredient_name == msg.deleted.name
             elm.removeClass('selected')
             elm.find('span.glyphicon-remove-circle').remove()
-            elm.attr('data-http-verb', 'patch')
             elm.removeAttr('data-ref')
             elm.removeAttr('data-confirm')
+            @ingredient_collector.splice(found_pos, 1)
+
         $('.carousel-indicators #addon_collector').html(msg.amount)
     )
-
 
   triggerMasterNavigation: (free) ->
 
