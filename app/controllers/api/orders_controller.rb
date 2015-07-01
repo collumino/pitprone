@@ -29,13 +29,33 @@ class Api::OrdersController < ActionController::API
     end
   end
 
+
+  def add_item
+    selected_ingredient = Ingredient.find_by_name(params[:name])
+    @order.pizza_in_progress.pizza_items << PizzaItem.new({quantity: 1, ingredient: selected_ingredient})
+    if @order.save
+      render json:  { added: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count }.to_json, status: :created
+    else
+      render json: @order.errors, status: :unprocessable_entity
+    end
+  end
+
+  def remove_item
+    selected_ingredient = Ingredient.find_by_name(params[:name])
+    if @order.pizza_in_progress.pizza_items.select{|pit| pit.ingredient == selected_ingredient }.last.delete
+      render json:  { deleted: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count }.to_json, status: :ok
+    else
+      render json: @order.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    @order = Order.find(params[:id])
-
-    if @order.update(order_params)
-      head :no_content
+    pizza = @order.pizza_in_progress
+    if pizza.update(size_factor: Pizza.weight(params[:size]))
+      # head :no_content
+      render json: pizza.size_factor, status: :ok
     else
       render json: @order.errors, status: :unprocessable_entity
     end

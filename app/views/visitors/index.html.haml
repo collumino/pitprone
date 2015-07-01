@@ -7,45 +7,44 @@
             = create_or_update_size
     .item#configure
       .carousel_body
-        .ingredient_list{ data: { offset: 0,  target: "#ingredient_nav" , spy: "scroll" }}
+        .ingredient_list{ data: { offset: 0,  target: "#ingredient_nav" , spy: "scroll" , ref: api_add_ingredient_path }}
           - @ingredients.each_with_index do |( key, list ), index|
             - id = key.downcase.gsub(%r{\s+},'_')
             .container-fluid.gap
               .row
-                .col-lg-3.col-md-4.col-sm-6.col-xs-12.header{ id: id , class: ( index == 0 ? 'active' : '')}
+                .col-lg-3.col-md-4.col-sm-6.col-xs-12.well.header{ id: id , class: ( index == 0 ? 'selected' : '')}
                   = link_to(key, '#')
                 - list.each do |ingredient|
-                  .col-lg-3.col-md-4.col-sm-6.col-xs-12{ class: ingredient_class(ingredient) , style: (index > 0 ? 'display:none' : '')}
-                    = generate_ingredient_link(ingredient)
+                  .col-lg-3.col-md-4.col-sm-6.col-xs-12{ class: ingredient.tags.join(' ') }
+                    = generate_ingredient_link(ingredient, index > 0 )
     .item#checkout
-      .container
-        .carousel_body
-          #summary
-            .row
-              .col-md-1.col-lg-1
-                %p
-                  1 &times;
-              .col-md-0.col-lg-9
-                Pizza mit Schinken, Peperoni, Zwiebeln, Salami, Chilli
-              .col-md-2.col-lg-2
-                %p.big
-                  24.90 CHF
-            .row.final_line
-              .col-md-10.col-lg-10
-                Gesamt
-              .col-md-2.col-lg-2
-                %p.big
-                  24.90 CHF
-            %em.small
-              Alle Kosten sind inklusive 2.5% Mehrwertsteuer
-            .pull-right
-              = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
-          = render partial: 'address_form'
+      .carousel_body
+        #summary
+          / .row
+          /   .col-md-1.col-lg-1
+          /     %p
+          /       1 &times;
+          /   .col-md-0.col-lg-9
+          /     Pizza mit Schinken, Peperoni, Zwiebeln, Salami, Chilli
+          /   .col-md-2.col-lg-2
+          /     %p.big
+          /       24.90 CHF
+          / .row.final_line
+          /   .col-md-10.col-lg-10
+          /     Gesamt
+          /   .col-md-2.col-lg-2
+          /     %p.big
+          /       24.90 CHF
+          %em.small
+            Alle Kosten sind inklusive 2.5% Mehrwertsteuer
+          .pull-right
+            = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
+        = render partial: 'address_form'
     %ol.nav.nav-pills.nav-justified.carousel-indicators
       %li.active{ data: { target: '#presenter', slide: { to: '0' }}}
-        = link_to("Grösse<br/><span id='pizza_size', class='badge'>#{ t(pizza_exists) || '?' }</span>".html_safe, '#' )
+        = link_to("Grösse<br/><span id='pizza_size', class='badge'>#{ t(current_pizza.size) || '?' }</span>".html_safe, '#' )
       %li{ data: { target: '#presenter', slide: { to: '1' }}}
-        = link_to('Zutaten<br/><span id="addon_collector"class="badge">0</span>'.html_safe, '#')
+        = link_to("Zutaten<br/><span id='addon_collector' class='badge'>#{ current_pizza ? current_pizza.pizza_items.count : 0 }</span>".html_safe, '#')
       %li{ data: { target: '#presenter', slide: { to: '2' }}}
         = link_to('Kasse<br/><span id="pizza_price", class="badge">0.00 CHF</span>'.html_safe, '#')
 

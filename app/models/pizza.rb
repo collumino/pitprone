@@ -3,18 +3,25 @@ class Pizza < ActiveRecord::Base
   belongs_to :order
 
   class << self
-    def size
-      { 'small' => 25, 'medium' => 28, 'big' => 32 }
+    def measures
+      hsh= {}
+      diameter = [25,28,32]
+      self.sizes_and_weights.keys.each_with_index{|key, index| hsh[key] = diameter[index] }
+      hsh
     end
 
     def weight(size)
-      { 'small' => 1.0, 'medium' => 1.25, 'big' => 1.65 }[size]
+      self.sizes_and_weights[size]
     end
 
-    def size_name(value)
-      { 'small' => 1.0, 'medium' => 1.25, 'big' => 1.65 }.invert[value]
+    def sizes_and_weights
+      { 'small' => 1.0, 'medium' => 1.25, 'big' => 1.65 }
     end
 
+  end
+
+  def size
+    Pizza.sizes_and_weights.invert[self.size_factor]
   end
 
 
@@ -24,6 +31,5 @@ class Pizza < ActiveRecord::Base
     }
     self.save
   end
-
 
 end

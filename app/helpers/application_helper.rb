@@ -1,44 +1,49 @@
 module ApplicationHelper
+
   def create_or_update_size
     content_tag(:div, class: 'row'){
-      Pizza.size.keys.collect{|size|
-        content_tag(:div, class: "col-lg-4 col-md-4 col-sm-4 #{size}_size#{ pizza_exists && pizza_exists == size ? ' selected' : '' }"){
-          link_to("<span>#{t(size)} <br/><small>∅ #{Pizza.size[size]} cm</small></span>".html_safe, '#',
-            data: { ref: api_orders_path, http_verb: 'post', value: size }
+      Pizza.measures.keys.collect{|size|
+        content_tag(:div, class: "col-lg-4 col-md-4 col-sm-4 #{size}_size#{ current_pizza && current_pizza.size == size ? ' selected' : '' }"){
+          link_to("<span>#{t(size)} <br/><small>∅ #{Pizza.measures[size]} cm</small></span>".html_safe, '#',
+            data: { ref: api_orders_path, http_verb: ( current_pizza ? 'patch' : 'post'), value: size }
           )
         }
       }.join('').html_safe
     }
   end
 
-  def present_boolean(bool)
-    return content_tag(:span, class: 'glyphicon glyphicon-remove'){} unless bool
-    content_tag(:span, class: 'glyphicon glyphicon-ok'){}
+  def current_pizza
+    return nil unless @order
+    @order.pizza_in_progress
   end
 
-  def generate_ingredient_link(ingredient, options = { title: '' })
+  def generate_ingredient_link(ingredient, hidden, tooltip_options= { title: '' }, html_options= { http_verb: 'patch' } )
     name = content_tag(:span , class: 'text'){ ingredient.name }
     name += content_tag( :span, class: 'price pull-right' ){ number_to_currency(ingredient.price) }
+
     if ingredient.owns_add_ons.any?
-      title = 'ethält ' + ingredient.owns_add_ons.collect{|sym| I18n.t(sym) }.join(', ')
-      options.merge!({title: title,  data: { toggle: 'tooltip', placement: 'bottom' }, class: 'info glyphicon glyphicon-info-sign pull-right' })
-      name += content_tag( :span , options ){}
+      title = 'enthält ' + ingredient.owns_add_ons.collect{|sym| I18n.t(sym) }.join(', ')
+      tooltip_options.merge!({title: title,  data: { toggle: 'tooltip', placement: 'bottom' }, class: 'info glyphicon glyphicon-info-sign pull-right' })
+      name += content_tag( :span , tooltip_options ){}
     end
 
-    link_to( name.html_safe, '#' )
-  end
-
-  def ingredient_class(ingredient)
-    return 'vegan' if ingredient.vegan
-    'owns_addon' if ingredient.owns_add_ons.any?
-  end
-
-  def pizza_exists
-    if @order.pizza_in_progress.present?
-      weight = @order.pizza_in_progress.size_factor
-      @actual_pizza = Pizza.size_name(weight)
+    if ingredient_is_selected?(ingredient)
+      name = content_tag( :span , class: 'glyphicon glyphicon-remove-circle' ){} + name
+      html_options.merge!({ confirm: 'wollen Sie diese Beilage entfernen ?' , http_verb: 'delete', ref: api_del_ingredient_path } )
     end
-    @actual_pizza ||= ''
+
+    link_to( name.html_safe, '#' , class: generate_class_tags(hidden, ingredient), data: html_options )
+  end
+
+  def generate_class_tags( hide_requested, ingredient )
+    collect = ['selectable']
+    collect << 'selected' if ingredient_is_selected?(ingredient)
+    collect << 'hidden' if hide_requested && ! ingredient_is_selected?(ingredient)
+    collect.join(' ')
+  end
+
+  def ingredient_is_selected?(ingredient)
+    current_pizza.pizza_items.collect{|pit| pit.ingredient }.include?(ingredient)
   end
 
 end

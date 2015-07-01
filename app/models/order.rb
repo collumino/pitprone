@@ -7,4 +7,9 @@ class Order < ActiveRecord::Base
     nil
   end
 
+  def count_ingredients
+    return 0 unless pizza_in_progress
+    pizza_in_progress.pizza_items.count
+  end
+
 end

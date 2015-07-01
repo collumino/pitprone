@@ -16,10 +16,18 @@ class Ingredient < ActiveRecord::Base
     add_on_list.select{|add| property.send(add) }
   end
 
+  def tags(collect = [])
+    collect << 'vegan' if self.vegan
+    collect << 'owns_addon' if self.owns_add_ons.any?
+    collect
+  end
+
   protected
 
   def add_on_list
     [:sugar, :antioxidant, :dye, :conserve , :phophate]
   end
+
+
 
 end
