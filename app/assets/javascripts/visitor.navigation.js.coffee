@@ -6,7 +6,10 @@ class Navigation
   constructor: ->
     @ingredient_collector = []
     @size_parent = $('#get_size')
+    @addon_nav_parent = $('.ingredient_selector')
     @addon_parent = $('.ingredient_list')
+    @addon_filter = $('#ingredient_filter > li')
+    @selection_container = $(".selected_items")
     for selected in @addon_parent.find('a.selected')
       if @ingredient_collector.indexOf($(selected).parent().data('refid')) < 0
         @ingredient_collector.push($(selected).parent().data('refid'))
@@ -16,24 +19,60 @@ class Navigation
       e.preventDefault()
       @fireSizeRequest($(e.currentTarget))
     )
-    @addon_parent.find('.header > a').on('click', (e) =>
+    @addon_nav_parent.find('li > a').on('click', (e) =>
       e.preventDefault()
       @showIngredientSelection($(e.currentTarget))
     )
+    @addon_filter.find('a').on('click', (e) =>
+      e.preventDefault()
+      @updateSelection($(e.currentTarget))
+    )
 
   catchSelectionTrigger: () ->
-    @addon_parent.find('a.selectable').on('click', (e) =>
+    @addon_parent.find('div[data-is-open="true"] > a').on('click', (e) =>
       e.preventDefault()
-      @fireAddOnRequest($(e.currentTarget))
+      elm = $(e.currentTarget)
+      @fireAddOnRequest(elm)
       @triggerMasterNavigation()
     )
 
   showIngredientSelection: (choice) ->
-    @addon_parent.find('.header').removeClass('selected')
+    @addon_nav_parent.find('li').removeClass('active')
     for selectable_link in @addon_parent.find('a.selectable')
       $(selectable_link).hide() unless $(selectable_link).hasClass('selected')
-    choice.closest('.row').find('> div > a').removeClass('hidden').show()
-    choice.parent().addClass('selected')
+    @visibleSector().find(choice.data('ref') + ' > a.selectable').removeClass('hidden').show()
+    choice.parent().addClass('active')
+
+  updateSelection: (elm) ->
+    list = []
+    @addon_filter.removeClass('active')
+    $(elm).parent().addClass('active')
+    if $(elm).data('filter') == 'vegan'
+      for cand in @addon_parent.find('.row > div.vegan')
+        list.push($(cand).data('refid'))
+      @hideIngredientExcept(list)
+    else if $(elm).data('filter') == 'owns_addon'
+      for cand in @addon_parent.find('.row > div.owns_addon')
+        list.push($(cand).data('refid'))
+      @hideIngredientInclude(list)
+    else
+      @freeAllIngredientLinks()
+
+  freeAllIngredientLinks: ->
+    for potential_link in @addon_parent.find('a')
+      $(potential_link).addClass('selectable') unless $(potential_link).hasClass('selectable')
+
+  hideIngredientExcept: (list) ->
+    @freeAllIngredientLinks()
+    for link in @addon_parent.find('a.selectable')
+      console.log( list.indexOf($(link).parent().data('refid')) < 0 )
+      $(link).removeClass('selectable') unless list.indexOf($(link).parent().data('refid')) < 0
+
+  hideIngredientInclude: (list) ->
+    @freeAllIngredientLinks()
+    for link in @addon_parent.find('a.selectable')
+      console.log( list.indexOf($(link).parent().data('refid')) < 0 )
+      $(link).removeClass('selectable') if list.indexOf($(link).parent().data('refid')) < 0
 
   fireSizeRequest: (elm) ->
     $.ajax({
@@ -49,7 +88,6 @@ class Navigation
         $('.carousel-indicators #pizza_size').html(msg.size)
         $('.carousel-indicators #pizza_price').html(msg.costs)
         $('.ingredient_list > div').addClass('hidden').hide()
-        console.log('pricing_' + elm.data('value') )
         $('.ingredient_list > #pricing_' + elm.data('value') ).removeClass('hidden').show()
         $('#presenter').carousel(1)
         @triggerMasterNavigation(true)
@@ -79,10 +117,11 @@ class Navigation
         if typeof msg.added != 'undefined'
           if ingredient_name == msg.added.name
             for selection in price_insensitives
-              $(selection).find('a').addClass('selected')
-            $('<span class="glyphicon glyphicon-remove-circle"></span>').insertBefore(price_insensitives.find('span.text'))
-            @ingredient_collector.push(my_id)
-
+              $(selection).addClass('hidden')
+            $('<li><a href="#"><b>' + msg.added.name + '</b><br/><small>' +  msg.added.category + '</small></a></li>').appendTo(@selection_container)
+            #   $(selection).find('a').addClass('selected')
+            # $('<span class="glyphicon glyphicon-remove-circle"></span>').insertBefore(price_insensitives.find('span.text'))
+            # @ingredient_collector.push(my_id)
         if typeof msg.deleted != 'undefined'
           if ingredient_name == msg.deleted.name
             for selection in price_insensitives
@@ -96,13 +135,16 @@ class Navigation
   triggerMasterNavigation: (free) ->
     collect = $('.carousel-indicators #addon_collector').closest('li')
     price = $('.carousel-indicators #pizza_price').closest('li')
+    remove_order = $('#finalize > li > a')
     if free
       collect.attr({'data-target':'#presenter', 'data-slide-to': '1'})
       collect.removeClass('locked')
-      console.log(collect)
       price.attr({'data-target':'#presenter', 'data-slide-to': '2'})
       price.removeClass('locked')
-      console.log(price)
+      remove_order.removeClass('hidden').show()
+
+  visibleSector: ->
+    @addon_parent.find('> div:visible')
 
 PitProneClient.visitor.init = () ->
   nav = new Navigation()

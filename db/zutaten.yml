@@ -169,7 +169,7 @@ ingredients:
       phophate: false
     is_default: false
     vegan: true
-    category: 'Saucen'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:
@@ -201,7 +201,7 @@ ingredients:
       phophate: false
     is_default: false
     vegan: false
-    category: 'Saucen'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:
@@ -249,7 +249,7 @@ ingredients:
       phophate: false
     is_default: false
     vegan: false
-    category: 'Meeresprodukte'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:
@@ -617,7 +617,7 @@ ingredients:
       phophate: false
     is_default: false
     vegan: false
-    category: 'Saucen'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:
@@ -697,7 +697,7 @@ ingredients:
       phophate: false
     is_default: false
     vegan: false
-    category: 'Meeresprodukte'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:
@@ -713,7 +713,7 @@ ingredients:
       phophate: false
     is_default: false
     vegan: false
-    category: 'Meeresprodukte'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:
@@ -745,7 +745,7 @@ ingredients:
       phophate: false
     is_default: false
     vegan: true
-    category: 'Saucen'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:
@@ -777,7 +777,7 @@ ingredients:
       phophate: false
     is_default: true
     vegan: true
-    category: 'Saucen'
+    category: 'Sonstiges'
     placeholder:
       pl0:
       pl2:

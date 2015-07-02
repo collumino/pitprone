@@ -11,6 +11,10 @@ main{
     .item {
       height: 85vh;
     }
+    #finalize{
+      position: absolute;
+      margin-top: -50px;
+    }
     #select{
       .row > div{
         text-align: center;
@@ -20,17 +24,26 @@ main{
       }
     }
     #configure{
-      .well{
-        padding: 0;
-        margin: 0;
-        min-height: none;
-        background-color: rgba(0,0,0,.5);
-        border: none;
-        border-radius: 0;
-        &.selected{
-          background-color: rgba(255,255,255,.125);
+      ul.selected_items{
+        list-style-type: none;
+        li{
+          display: inline;
+          a{
+            display: inline-block;
+          }
         }
       }
+//      .well{
+//        padding: 0;
+//        margin: 0;
+//        min-height: none;
+//        background-color: rgba(0,0,0,.5);
+//        border: none;
+//        border-radius: 0;
+//        &.selected{
+//          background-color: rgba(255,255,255,.125);
+//        }
+//      }
       a{
         display: block;
         &.selected{

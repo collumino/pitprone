@@ -1,6 +1,6 @@
 -# navigation styled for Bootstrap 3.0
 %nav.navbar.navbar-default.navbar-top
-  .container
+  .container-fluid
     .navbar-header
       %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
         %span.sr-only Toggle navigation
@@ -9,7 +9,10 @@
         %span.icon-bar
       = link_to 'Home', root_path, class: 'navbar-brand'
     .collapse.navbar-collapse
-      %ul.nav.navbar-nav
-        - if @order.persisted?
-          %li= link_to('Bestellung stornieren', reset_path, method: :delete)
+      %ul#ingredient_filter.nav.navbar-nav.navbar-right
+        %li= link_to(('Vegan ' + content_tag(:span, class: 'badge'){ Ingredient.vegan.count.to_s }).html_safe, '#', data: { filter: 'vegan' } )
+        %li= link_to(('Ohne Zusatzstoffe ' + content_tag(:span, class: 'badge'){ Ingredient.addon_free.count.to_s }).html_safe, '#', data: { filter: 'owns_addon' } )
+        %li.active= link_to(('Alles ' + content_tag(:span, class: 'badge'){ Ingredient.all.count.to_s }).html_safe, '#', data: { filter: 'none' } )
+        %li.describer="Vorauswahl"
+
         / = render 'layouts/navigation_links'

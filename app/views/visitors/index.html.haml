@@ -7,37 +7,35 @@
             = create_or_update_size
     .item#configure
       .carousel_body
-        .ingredient_list{ data: { offset: 0,  target: "#ingredient_nav" , spy: "scroll" , ref: api_add_ingredient_path }}
-          - Pizza.sizes_and_weights.each do |size, weight|
-            %div{ id: "pricing_#{size}", class: current_pizza.size != size ? 'hidden' : ''}
-              - @ingredients.each_with_index do |( key, list ), index|
-                - id = key.downcase.gsub(%r{\s+},'_')
-                .container-fluid.gap
-                  .row
-                    .col-lg-1.col-md-2.col-sm-3
-                      &nbsp;
-                    .col-lg-2.col-md-2.col-sm-3.col-xs-12.well.header{ id: id , class: ( index == 0 ? 'selected' : '')}
-                      = link_to(key, '#')
-                    - list.each_with_index do |ingredient, sec_index|
-                      .col-lg-3.col-md-4.col-sm-6.col-xs-12{ class: ingredient.tags.join(' '), data: { refid: "item_#{index}-#{sec_index}" } }
-                        = generate_ingredient_link(ingredient, index > 0 , weight)
+        .container-fluid
+          %ul.nav.nav-tabs.ingredient_selector
+            - @ingredients.keys.reverse.each_with_index do |key, index|
+              %li{ role: 'presentation', class: ( index == 0 ? 'active' : '') }= link_to(key, '#', data: { ref: '.' + key_identifier(key) })
+        .container-fluid.gap
+          .ingredient_list{ data: { offset: 0,  target: "#ingredient_nav" }}
+            .row
+              = customize_boxes
+          %ul.selected_items
+            - current_pizza.pizza_items.each do |item|
+              %li= link_to( [content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe , '#' )
     .item#checkout
       .carousel_body
         .container
           #summary.col-md-6.col-lg-6.col-sm-6.col-xs-6
-            %h1= "Ihre Pizza <sub>(#{current_pizza.size})</sub>".html_safe
-            - current_pizza.pizza_items.each do |item|
+            - if current_pizza
+              %h1= "Ihre Pizza <sub>(#{current_pizza.size})</sub>".html_safe
+              - current_pizza.pizza_items.each do |item|
+                .row
+                  .col-md-2= "#{item.quantity} &times;".html_safe
+                  .col-md-7= item.ingredient.name
+                  .col-md-3= number_to_currency(item.total)
               .row
-                .col-md-2= "#{item.quantity} &times;".html_safe
-                .col-md-7= item.ingredient.name
-                .col-md-3= number_to_currency(item.total)
-            .row
-              .col-md-3.pull-right.final_line
-                %b= number_to_currency(current_pizza.total)
-            %em.small
-              Alle Kosten sind inklusive 2.5% Mehrwertsteuer
-            .pull-right
-              = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
+                .col-md-3.pull-right.final_line
+                  %b= number_to_currency(current_pizza.total)
+              %em.small
+                Alle Kosten sind inklusive 2.5% Mehrwertsteuer
+              .pull-right
+                = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
           #form.col-md-6.col-lg-6.col-sm-6.col-xs-6
             = render partial: 'address_form'
     %ol.nav.nav-pills.nav-justified.carousel-indicators
@@ -46,5 +44,6 @@
       %li{ configure_links_to }
         = link_to("Zutaten<br/><span id='addon_collector' class='badge'>#{ current_pizza ? current_pizza.pizza_items.count - Ingredient.default.count : 0 }</span>".html_safe, '#' )
       %li{ checkout_links_to }
-        = link_to("Kasse<br/><span id='pizza_price', class='badge'>#{ number_to_currency(current_pizza.total) }</span>".html_safe, '#')
-
+        = link_to("Kasse<br/><span id='pizza_price', class='badge'>#{ current_pizza ? number_to_currency(current_pizza.total) : 'CHF 0.00'}</span>".html_safe, '#')
+  %ul#finalize.nav.nav-bar
+    %li= link_to('<span class="glyphicon glyphicon-remove-circle"></span> Bestellung stornieren'.html_safe, reset_path, method: :delete, class: @order.created? ? '' : 'hidden')

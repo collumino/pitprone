@@ -3,27 +3,29 @@ ruby '2.2.1'
 gem 'rails', '4.2.2'
 gem 'rails-api'
 gem 'sass-rails', '~> 5.0'
+gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
+gem 'haml-rails'
+gem 'simple_form'
 
+gem 'aasm'
 gem 'prawn'
 gem 'prawn-svg'
 
-gem 'jbuilder', '~> 2.0'
+gem 'devise'
+gem 'devise-i18n'
+gem 'devise-token_authenticatable'
+
+gem 'mysql2'
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
-gem 'bootstrap-sass'
-gem 'devise'
-gem 'devise-i18n'
-gem 'devise-token_authenticatable'
-gem 'haml-rails'
-gem 'mysql2'
-gem 'simple_form'
 group :development do
   gem 'better_errors'
   gem 'capistrano', '~> 3.0.1'
