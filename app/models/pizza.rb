@@ -2,6 +2,7 @@ class Pizza < ActiveRecord::Base
   has_many :pizza_items, -> { order("#{PizzaItem.table_name}.created_at ASC") }, dependent: :destroy
   belongs_to :order
 
+
   class << self
     def measures
       hsh= {}
@@ -24,12 +25,21 @@ class Pizza < ActiveRecord::Base
     Pizza.sizes_and_weights.invert[self.size_factor]
   end
 
-
   def prepare
     Ingredient.default.each{|base|
       self.pizza_items << PizzaItem.create( quantity: 1, ingredient: base )
     }
     self.save
+  end
+
+  def recalculate
+    self.update( total: calculate )
+  end
+
+  private
+
+  def calculate
+    pizza_items.inject(0){|sum, pit| sum + pit.total }
   end
 
 end

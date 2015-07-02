@@ -1,7 +1,7 @@
 = simple_form_for( @user , html: { class: 'form-horizontal' }, wrapper: :horizontal_form ) do |form|
   %h1
     Lieferanschrift
-  = form.input :email, placeholder: 'E-Mail'
+  / = form.input :email, placeholder: 'E-Mail'
   = simple_fields_for :address, wrapper: :horizontal_form do |address|
     = address.input :first_name, placeholder: 'Vorname'
     = address.input :name, placeholder: 'Nachname'

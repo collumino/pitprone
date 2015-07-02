@@ -17,9 +17,9 @@ module ApplicationHelper
     @order.pizza_in_progress
   end
 
-  def generate_ingredient_link(ingredient, hidden, tooltip_options= { title: '' }, html_options= { http_verb: 'patch' } )
+  def generate_ingredient_link(ingredient, hidden, multiplicator, tooltip_options= { title: '' })
     name = content_tag(:span , class: 'text'){ ingredient.name }
-    name += content_tag( :span, class: 'price pull-right' ){ number_to_currency(ingredient.price) }
+    name += content_tag( :span, class: 'price pull-right' ){ number_to_currency(ingredient.price * multiplicator) }
 
     if ingredient.owns_add_ons.any?
       title = 'enthält ' + ingredient.owns_add_ons.collect{|sym| I18n.t(sym) }.join(', ')
@@ -29,10 +29,9 @@ module ApplicationHelper
 
     if ingredient_is_selected?(ingredient)
       name = content_tag( :span , class: 'glyphicon glyphicon-remove-circle' ){} + name
-      html_options.merge!({ confirm: 'wollen Sie diese Beilage entfernen ?' , http_verb: 'delete', ref: api_del_ingredient_path } )
     end
 
-    link_to( name.html_safe, '#' , class: generate_class_tags(hidden, ingredient), data: html_options )
+    link_to( name.html_safe, '#' , class: generate_class_tags(hidden, ingredient))
   end
 
   def generate_class_tags( hide_requested, ingredient )

@@ -8,7 +8,8 @@ class Navigation
     @size_parent = $('#get_size')
     @addon_parent = $('.ingredient_list')
     for selected in @addon_parent.find('a.selected')
-      @ingredient_collector.push($(selected).parent().attr('id'))
+      if @ingredient_collector.indexOf($(selected).parent().data('refid')) < 0
+        @ingredient_collector.push($(selected).parent().data('refid'))
 
   catchTrigger: ->
     @size_parent.find('a').on('click', (e) =>
@@ -45,20 +46,26 @@ class Navigation
       , success: (msg) =>
         @size_parent.find('.row > div').removeClass('selected')
         @size_parent.find('.' + elm.data('value') + '_size').addClass('selected')
-        $('.carousel-indicators #pizza_size').html(elm.data('value'))
+        $('.carousel-indicators #pizza_size').html(msg.size)
+        $('.carousel-indicators #pizza_price').html(msg.costs)
+        $('.ingredient_list > div').addClass('hidden').hide()
+        console.log('pricing_' + elm.data('value') )
+        $('.ingredient_list > #pricing_' + elm.data('value') ).removeClass('hidden').show()
+        $('#presenter').carousel(1)
         @triggerMasterNavigation(true)
     })
 
   fireAddOnRequest: (elm) ->
     ingredient_name = elm.find('span.text').html()
-    my_id = elm.parent().attr('id')
-    found_pos = @ingredient_collector.indexOf(elm.parent().attr('id'))
+    my_id = elm.parent().data('refid')
+    found_pos = @ingredient_collector.indexOf(elm.parent().data('refid'))
+    price_insensitives = @addon_parent.find('[data-refid='  + my_id  + ']')
 
     if found_pos < 0
-      url = @addon_parent.data('ref')
+      url = '/api/add_ingredient'
       type='PATCH'
     else
-      url = elm.data('ref')
+      url = '/api/del_ingredient'
       type='DELETE'
 
     $.ajax({
@@ -71,24 +78,22 @@ class Navigation
     }).done( (msg) =>
         if typeof msg.added != 'undefined'
           if ingredient_name == msg.added.name
-            elm.addClass('selected')
-            $('<span class="glyphicon glyphicon-remove-circle"></span>').insertBefore(elm.find('span.text'))
-            elm.attr({'data-ref': '/api/del_ingredient', 'data-confirm': 'wollen Sie diese Beilage entfernen ?'})
+            for selection in price_insensitives
+              $(selection).find('a').addClass('selected')
+            $('<span class="glyphicon glyphicon-remove-circle"></span>').insertBefore(price_insensitives.find('span.text'))
             @ingredient_collector.push(my_id)
 
         if typeof msg.deleted != 'undefined'
           if ingredient_name == msg.deleted.name
-            elm.removeClass('selected')
-            elm.find('span.glyphicon-remove-circle').remove()
-            elm.removeAttr('data-ref')
-            elm.removeAttr('data-confirm')
+            for selection in price_insensitives
+              $(selection).find('a').removeClass('selected')
+            price_insensitives.find('span.glyphicon-remove-circle').remove()
             @ingredient_collector.splice(found_pos, 1)
-
+        $('.carousel-indicators #pizza_price').html(msg.costs)
         $('.carousel-indicators #addon_collector').html(msg.amount)
     )
 
   triggerMasterNavigation: (free) ->
-
     collect = $('.carousel-indicators #addon_collector').closest('li')
     price = $('.carousel-indicators #pizza_price').closest('li')
     if free

@@ -8,6 +8,8 @@
         %span.icon-bar
         %span.icon-bar
       = link_to 'Home', root_path, class: 'navbar-brand'
-    / .collapse.navbar-collapse
-    /   %ul.nav.navbar-nav
-    /     = render 'layouts/navigation_links'
+    .collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        - if @order.persisted?
+          %li= link_to('Bestellung stornieren', reset_path, method: :delete)
+        / = render 'layouts/navigation_links'

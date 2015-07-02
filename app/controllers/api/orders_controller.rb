@@ -1,6 +1,7 @@
 class Api::OrdersController < ActionController::API
   before_filter :authenticate_order_from_token!
 
+
   # GET /orders
   # GET /orders.json
   def index
@@ -22,7 +23,8 @@ class Api::OrdersController < ActionController::API
       pizza = Pizza.new( size_factor: Pizza.weight(params[:size]) )
       @order.pizzas << pizza if pizza.prepare
       if @order.save
-        render json: pizza.size_factor, status: :created
+        @order.recalculate
+        render json: { size: I18n.t(pizza.size) , costs: @order.sign_price }.to_json, status: :created
       else
         render json: @order.errors, status: :unprocessable_entity
       end
@@ -34,7 +36,8 @@ class Api::OrdersController < ActionController::API
     selected_ingredient = Ingredient.find_by_name(params[:name])
     @order.pizza_in_progress.pizza_items << PizzaItem.new({quantity: 1, ingredient: selected_ingredient})
     if @order.save
-      render json:  { added: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count - Ingredient.default.count }.to_json, status: :created
+      @order.recalculate
+      render json:  { costs: @order.sign_price , added: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count - Ingredient.default.count }.to_json, status: :created
     else
       render json: @order.errors, status: :unprocessable_entity
     end
@@ -43,7 +46,8 @@ class Api::OrdersController < ActionController::API
   def remove_item
     selected_ingredient = Ingredient.find_by_name(params[:name])
     if @order.pizza_in_progress.pizza_items.select{|pit| pit.ingredient == selected_ingredient }.last.delete
-      render json:  { deleted: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count - Ingredient.default.count}.to_json, status: :ok
+      @order.recalculate
+      render json:  { costs: @order.sign_price , deleted: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count - Ingredient.default.count}.to_json, status: :ok
     else
       render json: @order.errors, status: :unprocessable_entity
     end
@@ -54,8 +58,9 @@ class Api::OrdersController < ActionController::API
   def update
     pizza = @order.pizza_in_progress
     if pizza.update(size_factor: Pizza.weight(params[:size]))
+      @order.recalculate
       # head :no_content
-      render json: pizza.size_factor, status: :ok
+      render json: { size: I18n.t(pizza.size) , costs: @order.sign_price }.to_json, status: :ok
     else
       render json: @order.errors, status: :unprocessable_entity
     end
