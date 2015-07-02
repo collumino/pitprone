@@ -45,7 +45,7 @@ module ApplicationHelper
     puts options
     hide_class = ingredient_is_selected?(ingredient) ? 'hidden' : nil
 
-    hide_style = ( options[:is_open] && current_pizza.size == options[:sizing] ) ? 'display: block' : 'display: none'
+    hide_style = ( options[:is_open] && current_pizza && current_pizza.size == options[:sizing] ) ? 'display: block' : 'display: none'
 
     content_tag(:div, class: ['col-lg-3', 'col-md-4', 'col-sm-6', 'col-xs-12', hide_class].compact, data: options , style: hide_style){
       generate_ingredient_link(ingredient, weight)

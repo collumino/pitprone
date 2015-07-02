@@ -10,14 +10,15 @@
         .container-fluid
           %ul.nav.nav-tabs.ingredient_selector
             - @ingredients.keys.reverse.each_with_index do |key, index|
-              %li{ role: 'presentation', class: ( index == 0 ? 'active' : '') }= link_to(key, '#', data: { ref: '.' + key_identifier(key) })
+              %li{ role: 'presentation', class: ( index == 0 ? 'active' : '') }= link_to(key, '#', data: { ref: key_identifier(key) })
         .container-fluid.gap
           .ingredient_list{ data: { offset: 0,  target: "#ingredient_nav" }}
             .row
               = customize_boxes
           %ul.selected_items
-            - current_pizza.pizza_items.each do |item|
-              %li= link_to( [content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe , '#' )
+            - if current_pizza.present?
+              - current_pizza.pizza_items.each do |item|
+                %li= link_to( [content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe , '#' )
     .item#checkout
       .carousel_body
         .container
