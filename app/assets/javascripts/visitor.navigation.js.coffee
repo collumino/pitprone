@@ -8,11 +8,17 @@ class Navigation
     @selection_nav = $('#ingredient_selector > li')
     @selection_filter_nav = $('#ingredient_filter > li')
     @selection_container = $('.ingredient_list > .row > div')
+    @purchase_list = $('#purchased_items')
 
   catchTrigger: ->
     @size_nav.find('a').on('click', (e) => @fireSizeEvent($(e.currentTarget)) )
     @selection_nav.find('a').on('click', (e) => @toggleIngredientView($(e.currentTarget)) )
     @selection_filter_nav.find('a').on('click', (e) => @toggleSelectorFilter($(e.currentTarget)) )
+    @selection_container.find('a').on('click', (e) => @addIngredient($(e.currentTarget)) )
+
+  refreshDeletionTrigger: ->
+    @purchase_list.find('a').off('click')
+    @purchase_list.find('a').on('click', (e) => @remIngredient($(e.currentTarget)) )
 
   fireSizeEvent: (elm) ->
     $.ajax({
@@ -29,6 +35,34 @@ class Navigation
       @render()
       $('#presenter').carousel(1)
     )
+
+  fireIngredientRequest: (elm, verb, url, item_name) ->
+    $.ajax({
+      type: verb,
+      url: url,
+      data:{ name: item_name },
+      beforeSend: (request) ->
+        request.setRequestHeader("X-User", PitProneClient.user)
+        request.setRequestHeader("X-Token", PitProneClient.token)
+    }).success( (msg) =>
+      if verb == 'patch' then @addToOrder(msg, elm) else @removeFromOrder(elm)
+      @updateMasterNav(msg)
+    ).complete( =>
+      @refreshDeletionTrigger()
+    )
+
+  addToOrder: (msg, elm) ->
+    @purchase_list.append('<li data-sibling="' + elm.parent().data('sibling') + '" data-category="' + elm.parent().data('category') + '"><a href="#"><span class="glyphicon glyphicon-remove-circle"></span><b>' +  msg.added.name + '</b><br><small>' + msg.added.category + '</small></a></li>',)
+    @selection_container.filter('div[data-sibling="' + elm.parent().data('sibling') + '"]').addClass('hidden ordered').hide()
+
+  removeFromOrder: (elm) ->
+    # get all product related items and release them
+    get_family = @selection_container.filter('div[data-sibling="' + elm.parent().data('sibling') + '"]')
+    get_family.removeClass('hidden ordered')
+    # check if related window is actually open
+    if elm.parent().data('category') == @currentCat()
+      get_family.filter('[data-sizing="' + @currentSize() + '"]').show()
+    elm.parent().remove()
 
   updateMasterNav: (msg) ->
     $('.carousel-indicators #pizza_size').html(msg.size)
@@ -50,6 +84,12 @@ class Navigation
     @selection_filter_nav.removeClass('active')
     active.parent().addClass('active')
 
+  addIngredient: (choice) ->
+    @fireIngredientRequest(choice, 'patch', '/api/add_ingredient', choice.find('span.text').html())
+
+  remIngredient: (choice) ->
+    @fireIngredientRequest(choice, 'delete', '/api/del_ingredient', choice.find('b').html())
+
   toggleSelectorFilter: (choice) ->
     @updateFilterNav(choice)
     @render(choice.data('filter'))
@@ -66,7 +106,8 @@ class Navigation
     @render()
 
   lockFilterMatches: (filter) ->
-    @selection_container.removeClass('hidden')
+    for item in @selection_container
+      item.removeClass('hidden') unless item.hasClass('ordered')
     switch filter
       when 'vegan'
         @selection_container.filter( (index, item) -> $(item).data('tags').indexOf(filter) == -1).addClass('hidden')
@@ -96,6 +137,6 @@ class Navigation
 PitProneClient.visitor.init = () ->
   nav = new Navigation()
   nav.catchTrigger()
-
+  nav.refreshDeletionTrigger()
 $ ->
   PitProneClient.visitor.init()

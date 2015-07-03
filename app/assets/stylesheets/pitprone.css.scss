@@ -24,11 +24,11 @@ main{
       }
     }
     #configure{
-      ul.selected_items{
+      ul#purchased_items{
         list-style-type: none;
         li{
           display: inline;
-          a{
+          a, p{
             display: inline-block;
           }
         }

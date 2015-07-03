@@ -15,10 +15,14 @@
           .ingredient_list{ data: { offset: 0,  target: "#ingredient_nav" }}
             .row
               = customize_boxes
-          %ul.selected_items
+          %ul#purchased_items
             - if current_pizza.present?
               - current_pizza.pizza_items.each do |item|
-                %li= link_to( [content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe , '#' )
+                - if item.ingredient.is_default
+                  %li
+                    %p= [content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe
+                - else
+                  %li{ data: { category: key_identifier( item.ingredient.category ), sibling: item.ingredient.sibling } }= link_to( [content_tag(:span, class: 'glyphicon glyphicon-remove-circle'){} , content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe , '#' )
     .item#checkout
       .carousel_body
         .container
