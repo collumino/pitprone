@@ -5,7 +5,7 @@ module ApplicationHelper
       Pizza.measures.keys.collect{|size|
         content_tag(:div, class: "col-lg-4 col-md-4 col-sm-4 #{size}_size#{ current_pizza && current_pizza.size == size ? ' selected' : '' }"){
           link_to("<span>#{t(size)} <br/><small>∅ #{Pizza.measures[size]} cm</small></span>".html_safe, '#',
-            data: { ref: api_orders_path, http_verb: ( current_pizza ? 'patch' : 'post'), value: size }
+            data: { http_verb: ( current_pizza ? 'patch' : 'post'), value: size }
           )
         }
       }.join('').html_safe
@@ -42,9 +42,7 @@ module ApplicationHelper
   end
 
   def generate_ingredient_box(ingredient, options, weight)
-    puts options
     hide_class = ingredient_is_selected?(ingredient) ? 'hidden' : nil
-
     hide_style = ( options[:is_open] && current_pizza && current_pizza.size == options[:sizing] ) ? 'display: block' : 'display: none'
 
     content_tag(:div, class: ['col-lg-3', 'col-md-4', 'col-sm-6', 'col-xs-12', hide_class].compact, data: options , style: hide_style){

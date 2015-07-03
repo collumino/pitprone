@@ -13,6 +13,6 @@ $ ->
   PitProneClient.init()
 
   unless PitProneClient.user? && PitProneClient.token?
-    console.log('ajax disabled')
+    console.log('ajax is locked')
 
 

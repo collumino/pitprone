@@ -16,7 +16,7 @@ class Pizza < ActiveRecord::Base
     end
 
     def sizes_and_weights
-      { 'small' => 1.0, 'medium' => 1.25, 'big' => 1.65 }
+      { 'small' => 1.0, 'medium' => 1.25, 'big' => 1.50 }
     end
 
   end

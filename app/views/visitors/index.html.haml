@@ -8,7 +8,7 @@
     .item#configure
       .carousel_body
         .container-fluid
-          %ul.nav.nav-tabs.ingredient_selector
+          %ul.nav.nav-tabs#ingredient_selector
             - @ingredients.keys.reverse.each_with_index do |key, index|
               %li{ role: 'presentation', class: ( index == 0 ? 'active' : '') }= link_to(key, '#', data: { ref: key_identifier(key) })
         .container-fluid.gap
