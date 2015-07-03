@@ -18,7 +18,7 @@ class Navigation
     $('.carousel-indicators > li').last().find('a').on('click', (e) => @fireCheckoutEvent() )
     $('#form > form input[type="submit"]').on('click', (e) =>
       e.preventDefault()
-      @checkPlausibilities()
+      @preCheck()
     )
 
   refreshDeletionTrigger: ->
@@ -148,29 +148,39 @@ class Navigation
       @renderSummary(msg)
     )
 
-  checkPlausibilities: () ->
+  preCheck: (lock = false) ->
+    
     formData = {
        'name'    : $('input[name="address[name]"]').val(),
        'street'  : $('input[name="address[street]"]').val(),
-       'city'    : $('input[name="address[street]"').val()
+       'city'    : $('input[name="address[city]"').val()
     }
-
+    
+    for key,val of formData
+      parent = $('#form > form').find('input[name="address['+ key + ']"]')
+      container = parent.closest('.form-group')
+      if val.length == 0
+        container.addClass('error')
+        $('<small>darf nicht leer sein</small>').insertAfter(parent) if container.find('small').length == 0
+        lock = true
+      else if container.find('small')?
+        container.find('small').remove()
+        container.removeClass('error')
+    
     $.ajax({
-      type: 'post',
-      data: { address: formData},
-      url: '/api/check',
+      type: 'get',
+      cache: false,
+      url: '/api/prepare'
       beforeSend: (request) ->
         request.setRequestHeader("X-User", PitProneClient.user)
         request.setRequestHeader("X-Token", PitProneClient.token)
-    }).success( (msg) =>
-      $('#form > form').submit()
-    ).fail( (msg) ->
-      # if msg.responseJSON.error == 'msg'
-      #   $('#error_display').html(msg.responseJSON.msg)
-      # else
-      #   debugger
-
+    }).done( ->
+      
     )
+    
+    unless lock
+      $('#form > form').submit()
+    
   currentCat: ->
     @current_cat ? @selection_nav.filter('.active').find('a').data('ref')
 

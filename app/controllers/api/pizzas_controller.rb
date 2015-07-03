@@ -55,14 +55,9 @@ class Api::PizzasController < ActionController::API
   end
 
   def check_orderable
-    binding.pry
-    return head :no_content if @order.may_buy_pizza? && check_minimal_address_atrributes.empty?
-    unless @order.may_buy_pizza?
-      if @order.missing_conditions == 'leere Adresse'
-        binding.pry
-      end
-      render json: { error: 'msg', msg: @order.missing_conditions }.to_json , status: 422
-    end
+    @order.build_pizza! unless @order.may_buy_pizza?
+    return head :accepted if @order.may_buy_pizza?
+    head :conflict
   end
 
   private
@@ -92,7 +87,4 @@ class Api::PizzasController < ActionController::API
     "#{sprintf('%.02f', price.round(2) )} CHF"
   end
 
-  def check_minimal_address_atrributes
-    [:name, :street, :city].reject{|key| params[:address].keys.include?(key) }
-  end
 end

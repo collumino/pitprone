@@ -44,4 +44,4 @@
       %li{ checkout_links_to }
         = link_to("Kasse<br/><span id='pizza_price', class='badge'>#{ current_pizza ? number_to_currency(current_pizza.total) : 'CHF 0.00'}</span>".html_safe, '#')
   %ul#finalize.nav.nav-bar
-    %li= link_to('<span class="glyphicon glyphicon-remove-circle"></span> Bestellung stornieren'.html_safe, reset_path, method: :delete, class: @order.present? ? '' : 'hidden')
+    %li= link_to('<span class="glyphicon glyphicon-remove-circle"></span> Bestellung stornieren'.html_safe, reset_path, method: :delete, class: @order.persisted? ? '' : 'hidden')

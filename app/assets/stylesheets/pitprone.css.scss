@@ -66,3 +66,12 @@ main{
   width: 500px;
   margin-left: -250px;
 }
+
+form{
+  .error{
+    color: red;
+    input{
+      border-color: red;
+    }
+  }
+}

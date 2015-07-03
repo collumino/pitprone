@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :pizzas, except: [:new, :edit, :update, :show]
-    post 'check', to: "pizzas#check_orderable"
+    get 'prepare', to: "pizzas#check_orderable"
     patch 'pizzas', to: "pizzas#update"
     patch 'add_ingredient', to: "pizzas#add_item"
     delete 'del_ingredient', to: "pizzas#remove_item"
