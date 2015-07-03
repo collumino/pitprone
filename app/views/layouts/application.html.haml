@@ -1,5 +1,5 @@
 !!!
-%html{ data: { user: @user.email , token: @user.authentication_token}}
+%html
   %head
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
     %title= content_for?(:title) ? yield(:title) : 'Pitprone'

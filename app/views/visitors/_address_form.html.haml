@@ -1,12 +1,13 @@
-= simple_form_for( @user , html: { class: 'form-horizontal' }, wrapper: :horizontal_form ) do |form|
+= simple_form_for( @user, url: confirm_path ,  html: { class: 'form-horizontal' }, wrapper: :horizontal_form ) do |form|
   %h1
     Lieferanschrift
   / = form.input :email, placeholder: 'E-Mail'
   = simple_fields_for :address, wrapper: :horizontal_form do |address|
     = address.input :first_name, placeholder: 'Vorname'
     = address.input :name, placeholder: 'Nachname'
-    = address.input :street, placeholder: 'Strasse'
+    = address.input :street, placeholder: 'Strasse & Hausnummer'
     = address.input :city, placeholder: 'Ort'
     = address.input :phone, placeholder: 'Telefon'
     = address.input :mobile, placeholder: 'Mobilnummer'
   = form.submit('Bestellen', class: 'btn-lg pull-right')
+#error_display

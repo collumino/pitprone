@@ -34,7 +34,15 @@ class Order < ActiveRecord::Base
 
 
   def valid_order?
-    self.total > 0 && current_user && current_user.address.valid?
+    self.total > 0 && self.user.present? && self.user.address.present? && self.user.address.valid?
+  end
+
+  def missing_conditions
+    return 'leere Bestellung' if self.total == 0
+    return 'kein Benutzer' unless self.user.present?
+    return 'leere Adresse' unless self.user.address.present?
+    return self.user.address.errors unless self.user.address.valid?
+    'unzulässiger Statusübergang'
   end
 
   def pizza_in_progress

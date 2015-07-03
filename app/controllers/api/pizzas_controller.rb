@@ -24,6 +24,7 @@ class Api::PizzasController < ActionController::API
     selected_ingredient = Ingredient.find_by_name(params[:name])
     @order.pizza_in_progress.pizza_items << PizzaItem.new({quantity: 1, ingredient: selected_ingredient})
     if @order.save
+      @order.build_pizza! if @order.may_build_pizza?
       @order.recalculate
       render json:  { costs: @order.sign_price , added: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count - Ingredient.default.count }.to_json, status: :created
     else
@@ -53,6 +54,17 @@ class Api::PizzasController < ActionController::API
     end
   end
 
+  def check_orderable
+    binding.pry
+    return head :no_content if @order.may_buy_pizza? && check_minimal_address_atrributes.empty?
+    unless @order.may_buy_pizza?
+      if @order.missing_conditions == 'leere Adresse'
+        binding.pry
+      end
+      render json: { error: 'msg', msg: @order.missing_conditions }.to_json , status: 422
+    end
+  end
+
   private
 
   def authenticate_order_from_token!
@@ -78,5 +90,9 @@ class Api::PizzasController < ActionController::API
 
   def con2curr(price)
     "#{sprintf('%.02f', price.round(2) )} CHF"
+  end
+
+  def check_minimal_address_atrributes
+    [:name, :street, :city].reject{|key| params[:address].keys.include?(key) }
   end
 end

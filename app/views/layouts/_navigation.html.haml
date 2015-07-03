@@ -9,7 +9,7 @@
         %span.icon-bar
       = link_to 'Home', root_path, class: 'navbar-brand'
     .collapse.navbar-collapse
-      %ul#ingredient_filter.nav.navbar-nav.navbar-right
+      %ul#ingredient_filter.nav.navbar-nav.navbar-right.hidden
         %li= link_to(('Vegan ' + content_tag(:span, class: 'badge'){ Ingredient.vegan.count.to_s }).html_safe, '#', data: { filter: 'vegan' } )
         %li= link_to(('Ohne Zusatzstoffe ' + content_tag(:span, class: 'badge'){ Ingredient.addon_free.count.to_s }).html_safe, '#', data: { filter: 'owns_addon' } )
         %li.active= link_to(('Alles ' + content_tag(:span, class: 'badge'){ Ingredient.all.count.to_s }).html_safe, '#', data: { filter: 'none' } )

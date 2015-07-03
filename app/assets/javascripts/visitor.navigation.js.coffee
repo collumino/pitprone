@@ -16,6 +16,10 @@ class Navigation
     @selection_filter_nav.find('a').on('click', (e) => @toggleSelectorFilter($(e.currentTarget)) )
     @selection_container.find('a').on('click', (e) => @addIngredient($(e.currentTarget)) )
     $('.carousel-indicators > li').last().find('a').on('click', (e) => @fireCheckoutEvent() )
+    $('#form > form input[type="submit"]').on('click', (e) =>
+      e.preventDefault()
+      @checkPlausibilities()
+    )
 
   refreshDeletionTrigger: ->
     @purchase_list.find('a').off('click')
@@ -61,10 +65,12 @@ class Navigation
     @selection_container.filter('div[data-category="' + @currentCat() + '"][data-sizing="' + @currentSize() + '"]').show()
 
   renderSummary: (msg) ->
-    $('#summary').append('<h1>Ihre Pizza <small>[ ' + msg.size + ' ]</small></h1>')
+    home = $('#summary > .item_notes')
+    home.html(' ')
+    home.append('<h1>Ihre Pizza <small>[ ' + msg.size + ' ]</small></h1>')
     for line in msg.items
-      $('#summary').append('<div class="row"><div class="col-md-2">' + line.amount + '</div><div class="col-md-7">' +  line.describer + '</div><div class="col-md-3 text-right">' +  line.price + '</div></div>')
-    $('#summary').append('<div class="row final_line"><div class="col-md-9">Gesamt</div><div class="col-md-3 text-right">' +  msg.costs + '</div></div>')
+      home.append('<div class="row"><div class="col-md-2">' + line.amount + '</div><div class="col-md-7">' +  line.describer + '</div><div class="col-md-3 text-right">' +  line.price + '</div></div>')
+    home.append('<div class="row final_line"><div class="col-md-9">Gesamt</div><div class="col-md-3 text-right">' +  msg.costs + '</div></div>')
 
   addIngredient: (choice) ->
     @fireIngredientRequest(choice, 'patch', '/api/add_ingredient', choice.find('span.text').html())
@@ -142,6 +148,29 @@ class Navigation
       @renderSummary(msg)
     )
 
+  checkPlausibilities: () ->
+    formData = {
+       'name'    : $('input[name="address[name]"]').val(),
+       'street'  : $('input[name="address[street]"]').val(),
+       'city'    : $('input[name="address[street]"').val()
+    }
+
+    $.ajax({
+      type: 'post',
+      data: { address: formData},
+      url: '/api/check',
+      beforeSend: (request) ->
+        request.setRequestHeader("X-User", PitProneClient.user)
+        request.setRequestHeader("X-Token", PitProneClient.token)
+    }).success( (msg) =>
+      $('#form > form').submit()
+    ).fail( (msg) ->
+      # if msg.responseJSON.error == 'msg'
+      #   $('#error_display').html(msg.responseJSON.msg)
+      # else
+      #   debugger
+
+    )
   currentCat: ->
     @current_cat ? @selection_nav.filter('.active').find('a').data('ref')
 

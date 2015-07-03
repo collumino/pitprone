@@ -1,4 +1,4 @@
-#presenter.carousel.slide{ data: { ride: "carousel" , wrap: 'false', interval: 'false'}}
+#presenter.carousel.slide{ data: { ride: "carousel" , wrap: 'false', interval: 'false', user: @user.email , token: @user.authentication_token }}
   .carousel-inner{role: 'listbox'}
     .item.active#select
       .container
@@ -28,10 +28,12 @@
       .carousel_body
         .container
           #summary.col-md-6.col-lg-6.col-sm-6.col-xs-6
-            %em.small
-              Alle Kosten sind inklusive 2.5% Mehrwertsteuer
-            .pull-right
-              = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
+            .item_notes
+            .foot_notes
+              %em.small
+                Alle Kosten sind inklusive 2.5% Mehrwertsteuer
+              .pull-right
+                = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
           #form.col-md-6.col-lg-6.col-sm-6.col-xs-6
             = render partial: 'address_form'
     %ol.nav.nav-pills.nav-justified.carousel-indicators
@@ -42,4 +44,4 @@
       %li{ checkout_links_to }
         = link_to("Kasse<br/><span id='pizza_price', class='badge'>#{ current_pizza ? number_to_currency(current_pizza.total) : 'CHF 0.00'}</span>".html_safe, '#')
   %ul#finalize.nav.nav-bar
-    %li= link_to('<span class="glyphicon glyphicon-remove-circle"></span> Bestellung stornieren'.html_safe, reset_path, method: :delete, class: @order.created? ? '' : 'hidden')
+    %li= link_to('<span class="glyphicon glyphicon-remove-circle"></span> Bestellung stornieren'.html_safe, reset_path, method: :delete, class: @order.present? ? '' : 'hidden')
