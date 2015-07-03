@@ -10,4 +10,5 @@ class VisitorsController < ApplicationController
     current_or_guest_user.orders.last.destroy
     redirect_to :root
   end
+
 end

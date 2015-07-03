@@ -22,25 +22,16 @@
                   %li
                     %p= [content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe
                 - else
-                  %li{ data: { category: key_identifier( item.ingredient.category ), sibling: item.ingredient.sibling } }= link_to( [content_tag(:span, class: 'glyphicon glyphicon-remove-circle'){} , content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe , '#' )
+                  %li{ data: { category: key_identifier( item.ingredient.category ), sibling: item.ingredient.sibling } }
+                    = link_to( [content_tag(:span, class: 'glyphicon glyphicon-remove-circle'){} , content_tag(:b){item.ingredient.name}, '<br/>', content_tag(:small){item.ingredient.category}].join().html_safe , '#' )
     .item#checkout
       .carousel_body
         .container
           #summary.col-md-6.col-lg-6.col-sm-6.col-xs-6
-            - if current_pizza
-              %h1= "Ihre Pizza <sub>(#{current_pizza.size})</sub>".html_safe
-              - current_pizza.pizza_items.each do |item|
-                .row
-                  .col-md-2= "#{item.quantity} &times;".html_safe
-                  .col-md-7= item.ingredient.name
-                  .col-md-3= number_to_currency(item.total)
-              .row
-                .col-md-3.pull-right.final_line
-                  %b= number_to_currency(current_pizza.total)
-              %em.small
-                Alle Kosten sind inklusive 2.5% Mehrwertsteuer
-              .pull-right
-                = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
+            %em.small
+              Alle Kosten sind inklusive 2.5% Mehrwertsteuer
+            .pull-right
+              = link_to((content_tag(:span, class: 'glyphicon glyphicon-plus-sign' ){} + ' eine weitere Pizza hinzufügen').html_safe, '#', class: 'sec_link')
           #form.col-md-6.col-lg-6.col-sm-6.col-xs-6
             = render partial: 'address_form'
     %ol.nav.nav-pills.nav-justified.carousel-indicators

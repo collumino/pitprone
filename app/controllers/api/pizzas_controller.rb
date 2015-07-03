@@ -1,23 +1,12 @@
-class Api::OrdersController < ActionController::API
+class Api::PizzasController < ActionController::API
   before_filter :authenticate_order_from_token!
 
-
-  # GET /orders
-  # GET /orders.json
+  # shows current pizza with all items
   def index
-    @orders = Order.all
-
-    render json: @orders
+    render json: { size: I18n.t(@order.pizza_in_progress.size) , costs: con2curr( @order.pizza_in_progress.total ), items: reduced_pizza_items }.to_json, status: :ok
   end
 
-  # GET /orders/1
-  # GET /orders/1.json
-  def show
-    render json: @order
-  end
-
-  # POST /orders
-  # POST /orders.json
+  # creating pizza
   def create
     Pizza.transaction do
       pizza = Pizza.new( size_factor: Pizza.weight(params[:size]) )
@@ -30,7 +19,6 @@ class Api::OrdersController < ActionController::API
       end
     end
   end
-
 
   def add_item
     selected_ingredient = Ingredient.find_by_name(params[:name])
@@ -53,8 +41,7 @@ class Api::OrdersController < ActionController::API
     end
   end
 
-  # PATCH/PUT /orders/1
-  # PATCH/PUT /orders/1.json
+  # changes the size of pizza
   def update
     pizza = @order.pizza_in_progress
     if pizza.update(size_factor: Pizza.weight(params[:size]))
@@ -64,14 +51,6 @@ class Api::OrdersController < ActionController::API
     else
       render json: @order.errors, status: :unprocessable_entity
     end
-  end
-
-  # DELETE /orders/1
-  # DELETE /orders/1.json
-  def destroy
-    @order.destroy
-
-    head :no_content
   end
 
   private
@@ -91,4 +70,13 @@ class Api::OrdersController < ActionController::API
     end
   end
 
+  def reduced_pizza_items
+    @order.pizza_in_progress.pizza_items.collect{|line|
+      { amount: line.quantity, describer: line.ingredient.name, price: con2curr(line.total) }
+    }
+  end
+
+  def con2curr(price)
+    "#{sprintf('%.02f', price.round(2) )} CHF"
+  end
 end

@@ -15,41 +15,11 @@ class Navigation
     @selection_nav.find('a').on('click', (e) => @toggleIngredientView($(e.currentTarget)) )
     @selection_filter_nav.find('a').on('click', (e) => @toggleSelectorFilter($(e.currentTarget)) )
     @selection_container.find('a').on('click', (e) => @addIngredient($(e.currentTarget)) )
+    $('.carousel-indicators > li').last().find('a').on('click', (e) => @fireCheckoutEvent() )
 
   refreshDeletionTrigger: ->
     @purchase_list.find('a').off('click')
     @purchase_list.find('a').on('click', (e) => @remIngredient($(e.currentTarget)) )
-
-  fireSizeEvent: (elm) ->
-    $.ajax({
-      type: elm.data('http-verb'),
-      url: '/api/orders',
-      data:{ size: elm.data('value') },
-      beforeSend: (request) ->
-        request.setRequestHeader("X-User", PitProneClient.user)
-        request.setRequestHeader("X-Token", PitProneClient.token)
-    }).success( (msg) =>
-      @current_size = elm.data('value')
-      @updateSizeNav(elm)
-      @updateMasterNav(msg)
-      @render()
-      $('#presenter').carousel(1)
-    )
-
-  fireIngredientRequest: (elm, verb, url, item_name) ->
-    $.ajax({
-      type: verb,
-      url: url,
-      data:{ name: item_name },
-      beforeSend: (request) ->
-        request.setRequestHeader("X-User", PitProneClient.user)
-        request.setRequestHeader("X-Token", PitProneClient.token)
-    }).success( (msg) =>
-      if verb == 'patch' then @addToOrder(msg, elm) else @removeFromOrder(elm)
-      @updateMasterNav(msg)
-    ).complete( =>
-      @refreshDeletionTrigger()
-    )
 
   addToOrder: (msg, elm) ->
     @purchase_list.append('<li data-sibling="' + elm.parent().data('sibling') + '" data-category="' + elm.parent().data('category') + '"><a href="#"><span class="glyphicon glyphicon-remove-circle"></span><b>' +  msg.added.name + '</b><br><small>' + msg.added.category + '</small></a></li>',)
@@ -84,26 +54,32 @@ class Navigation
     @selection_filter_nav.removeClass('active')
     active.parent().addClass('active')
 
-  addIngredient: (choice) ->
-    @fireIngredientRequest(choice, 'patch', '/api/add_ingredient', choice.find('span.text').html())
-
-  remIngredient: (choice) ->
-    @fireIngredientRequest(choice, 'delete', '/api/del_ingredient', choice.find('b').html())
-
-  toggleSelectorFilter: (choice) ->
-    @updateFilterNav(choice)
-    @render(choice.data('filter'))
-
   render: ( filter= null ) ->
     @selection_container.hide()
     if filter?
       @lockFilterMatches(filter)
     @selection_container.filter('div[data-category="' + @currentCat() + '"][data-sizing="' + @currentSize() + '"]').show()
 
+  renderSummary: (msg) ->
+    $('#summary').append('<h1>Ihre Pizza <small>[ ' + msg.size + ' ]</small></h1>')
+    for line in msg.items
+      $('#summary').append('<div class="row"><div class="col-md-2">' + line.amount + '</div><div class="col-md-7">' +  line.describer + '</div><div class="col-md-3 text-right">' +  line.price + '</div></div>')
+    $('#summary').append('<div class="row final_line"><div class="col-md-9">Gesamt</div><div class="col-md-3 text-right">' +  msg.costs + '</div></div>')
+
+  addIngredient: (choice) ->
+    @fireIngredientRequest(choice, 'patch', '/api/add_ingredient', choice.find('span.text').html())
+
+  remIngredient: (choice) ->
+    @fireIngredientRequest(choice, 'delete', '/api/del_ingredient', choice.find('b').html())
+
   toggleIngredientView: (choice) ->
     @current_cat = choice.data('ref')
     @updateSelectorNav(choice)
     @render()
+
+  toggleSelectorFilter: (choice) ->
+    @updateFilterNav(choice)
+    @render(choice.data('filter'))
 
   lockFilterMatches: (filter) ->
     for item in @selection_container
@@ -123,6 +99,49 @@ class Navigation
     price.attr({'data-target':'#presenter', 'data-slide-to': '2'})
     price.removeClass('locked')
 
+  fireSizeEvent: (elm) ->
+    $.ajax({
+      type: elm.data('http-verb'),
+      url: '/api/pizzas',
+      data:{ size: elm.data('value') },
+      beforeSend: (request) ->
+        request.setRequestHeader("X-User", PitProneClient.user)
+        request.setRequestHeader("X-Token", PitProneClient.token)
+    }).success( (msg) =>
+      @current_size = elm.data('value')
+      @updateSizeNav(elm)
+      @updateMasterNav(msg)
+      @render()
+      $('#presenter').carousel(1)
+    )
+
+  fireIngredientRequest: (elm, verb, url, item_name) ->
+    $.ajax({
+      type: verb,
+      url: url,
+      data:{ name: item_name },
+      beforeSend: (request) ->
+        request.setRequestHeader("X-User", PitProneClient.user)
+        request.setRequestHeader("X-Token", PitProneClient.token)
+    }).success( (msg) =>
+      if verb == 'patch' then @addToOrder(msg, elm) else @removeFromOrder(elm)
+      @updateMasterNav(msg)
+    ).complete( =>
+      @refreshDeletionTrigger()
+    )
+
+  fireCheckoutEvent: ->
+    $.ajax({
+      type: 'get',
+      cache: false,
+      url: '/api/pizzas'
+      beforeSend: (request) ->
+        request.setRequestHeader("X-User", PitProneClient.user)
+        request.setRequestHeader("X-Token", PitProneClient.token)
+    }).success( (msg) =>
+      @renderSummary(msg)
+    )
+
   currentCat: ->
     @current_cat ? @selection_nav.filter('.active').find('a').data('ref')
 
@@ -138,5 +157,6 @@ PitProneClient.visitor.init = () ->
   nav = new Navigation()
   nav.catchTrigger()
   nav.refreshDeletionTrigger()
+
 $ ->
   PitProneClient.visitor.init()
