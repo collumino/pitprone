@@ -9,7 +9,7 @@ set :format, :pretty
 set :log_level, :debug
 set :pty, true
 
-# set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
 set :linked_dirs, %w{ public/pitprone }
 
 set :keep_releases, 5
