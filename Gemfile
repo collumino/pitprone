@@ -16,6 +16,7 @@ gem 'simple_form'
 gem 'aasm'
 gem 'prawn'
 gem 'prawn-svg'
+gem 'prawn-table'
 
 gem 'devise'
 gem 'devise-i18n'

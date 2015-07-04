@@ -68,10 +68,13 @@ class Navigation
   renderSummary: (msg) ->
     home = $('#summary > .item_notes')
     home.html(' ')
-    home.append('<h1>Ihre Pizza <small>[ ' + msg.size + ' ]</small></h1>')
-    for line in msg.items
-      home.append('<div class="row"><div class="col-md-2">' + line.amount + '</div><div class="col-md-7">' +  line.describer + '</div><div class="col-md-3 text-right">' +  line.price + '</div></div>')
-    home.append('<div class="row final_line"><div class="col-md-9">Gesamt</div><div class="col-md-3 text-right">' +  msg.costs + '</div></div>')
+    if msg.length == 0
+      home.append('<h3>Sie benötigen mindestens eine Zutat></h3>')
+    else
+      home.append('<h1>Ihre Pizza <small>[ ' + msg.size + ' ]</small></h1>')
+      for line in msg.items
+        home.append('<div class="row"><div class="col-md-2">' + line.amount + '</div><div class="col-md-7">' +  line.describer + '</div><div class="col-md-3 text-right">' +  line.price + '</div></div>')
+      home.append('<div class="row final_line"><div class="col-md-9">Gesamt</div><div class="col-md-3 text-right">' +  msg.costs + '</div></div>')
 
   addIngredient: (choice) ->
     @fireIngredientRequest(choice, 'patch', '/api/add_ingredient', choice.find('span.text').html())
@@ -158,7 +161,6 @@ class Navigation
        'street'  : $('input[name="address[street]"]').val(),
        'city'    : $('input[name="address[city]"').val()
     }
-
     for key,val of formData
       parent = $('#form > form').find('input[name="address['+ key + ']"]')
       container = parent.closest('.form-group')
@@ -169,7 +171,6 @@ class Navigation
       else if container.find('small')?
         container.find('small').remove()
         container.removeClass('error')
-
     $.ajax({
       type: 'get',
       cache: false,
