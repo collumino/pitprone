@@ -359,6 +359,7 @@ DEPENDENCIES
   rails_layout
   rspec-rails
   rubocop
+  sass
   sass-rails (~> 5.0)
   selenium-webdriver
   simple_form

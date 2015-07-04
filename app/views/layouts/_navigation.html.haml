@@ -7,7 +7,7 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      = link_to 'Home', root_path, class: 'navbar-brand'
+      = link_to image_tag('pitprone_logo.svg'), root_path, class: 'navbar-brand'
     .collapse.navbar-collapse
       %ul#ingredient_filter.nav.navbar-nav.navbar-right.hidden
         %li= link_to(('Vegan ' + content_tag(:span, class: 'badge'){ Ingredient.vegan.count.to_s }).html_safe, '#', data: { filter: 'vegan' } )

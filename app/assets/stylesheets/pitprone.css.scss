@@ -14,8 +14,12 @@ main{
   margin: 0;
   padding: 0;
   #presenter{
+    padding-top: 15vh;
+    background: transparent asset_url('pizza_diffus.jpg') no-repeat center center;
+    background-size: cover;
     .item {
       height: 85vh;
+      padding-top: 15vh;
     }
     #finalize{
       position: absolute;
@@ -24,26 +28,48 @@ main{
     #select{
       .row > div{
         text-align: center;
-        &.selected{
-          background-color: rgba(255,155,0,.5);
-        }
+      }
+    }
+    #get_size{
+      a{
+        padding: 4em 0;
+        display: block;
+        font-size: 24pt;
       }
     }
     #configure{
+      .ingredient_list{
+        padding-bottom: 2em;
+        a{
+          padding: 1em .5em;
+        }
+      }
       ul#purchased_items{
         list-style-type: none;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        bottom: 5em;
+        padding: 0;
         li{
           display: inline;
+          margin: 0 0 0 5px;
+          border-right: 1px solid white;
+          padding: 1.75em .5em .25em;
           a, p{
             display: inline-block;
+            padding: .5em;
+          }
+          &:last-child{
+            border: none;
           }
         }
       }
       a{
         display: block;
-        &.selected{
-          background-color: rgba(255,150,0,.25);
-        }
+//        &.selected{
+//          background-color: rgba(255,150,0,.25);
+//        }
       }
     }
     .carousel-indicators{
