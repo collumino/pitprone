@@ -345,7 +345,6 @@ DEPENDENCIES
   haml-rails
   html2haml
   hub
-  i18n
   jbuilder (~> 2.0)
   jquery-rails
   launchy
