@@ -5,8 +5,8 @@ require 'pdf/doc'
 require 'fileutils'
 
 class PdfGenerator
-  BASE_PATH = File.join(Rails.root, 'system', 'pitprone', 'pdf_test') if Rails.env.include?('test')
-  BASE_PATH = File.join(Rails.root, 'system', 'pitprone', 'pdf') if Rails.env.include?('development')
+  BASE_PATH = File.join(Rails.root, 'public', 'pitprone', 'pdf_test') if Rails.env.include?('test')
+  BASE_PATH = File.join(Rails.root, 'public', 'pitprone', 'pdf') if Rails.env.include?('development')
   BASE_PATH ||= '/var/www/webroot/shared/public/pdf'
 
   class << self
