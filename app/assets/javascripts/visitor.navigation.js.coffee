@@ -15,7 +15,8 @@ class Navigation
     @selection_nav.find('a').on('click', (e) => @toggleIngredientView($(e.currentTarget)) )
     @selection_filter_nav.find('a').on('click', (e) => @toggleSelectorFilter($(e.currentTarget)) )
     @selection_container.find('a').on('click', (e) => @addIngredient($(e.currentTarget)) )
-    $('.carousel-indicators > li').last().find('a').on('click', (e) => @fireCheckoutEvent() )
+    $('.carousel-indicators > li').last().find('a').on('click', (e) => @fireCheckoutEvent(e) )
+    $('#presenter').on('slid.bs.carousel', (e) => @toggleFilter(e) )
     $('#form > form input[type="submit"]').on('click', (e) =>
       e.preventDefault()
       @preCheck()
@@ -87,9 +88,18 @@ class Navigation
     @updateFilterNav(choice)
     @render(choice.data('filter'))
 
+  toggleFilter: (carousel) ->
+    slide = $('.carousel-indicators > li').index($('.carousel-indicators > li.active'))
+    console.log(slide)
+    if  slide == 1
+      $('#ingredient_filter').removeClass('hidden').slideDown()
+    else
+      $('#ingredient_filter').slideUp(300, () -> $(this).addClass('hidden') )
+    true
+
   lockFilterMatches: (filter) ->
     for item in @selection_container
-      item.removeClass('hidden') unless item.hasClass('ordered')
+      $(item).removeClass('hidden') unless $(item).hasClass('ordered')
     switch filter
       when 'vegan'
         @selection_container.filter( (index, item) -> $(item).data('tags').indexOf(filter) == -1).addClass('hidden')
@@ -110,9 +120,7 @@ class Navigation
       type: elm.data('http-verb'),
       url: '/api/pizzas',
       data:{ size: elm.data('value') },
-      beforeSend: (request) ->
-        request.setRequestHeader("X-User", PitProneClient.user)
-        request.setRequestHeader("X-Token", PitProneClient.token)
+      beforeSend: (request) => @defineHeaders(request)
     }).success( (msg) =>
       @current_size = elm.data('value')
       @updateSizeNav(elm)
@@ -126,9 +134,7 @@ class Navigation
       type: verb,
       url: url,
       data:{ name: item_name },
-      beforeSend: (request) ->
-        request.setRequestHeader("X-User", PitProneClient.user)
-        request.setRequestHeader("X-Token", PitProneClient.token)
+      beforeSend: (request) => @defineHeaders(request)
     }).success( (msg) =>
       if verb == 'patch' then @addToOrder(msg, elm) else @removeFromOrder(elm)
       @updateMasterNav(msg)
@@ -140,22 +146,19 @@ class Navigation
     $.ajax({
       type: 'get',
       cache: false,
-      url: '/api/pizzas'
-      beforeSend: (request) ->
-        request.setRequestHeader("X-User", PitProneClient.user)
-        request.setRequestHeader("X-Token", PitProneClient.token)
+      url: '/api/pizzas',
+      beforeSend: (request) => @defineHeaders(request)
     }).success( (msg) =>
       @renderSummary(msg)
     )
 
   preCheck: (lock = false) ->
-    
     formData = {
        'name'    : $('input[name="address[name]"]').val(),
        'street'  : $('input[name="address[street]"]').val(),
        'city'    : $('input[name="address[city]"').val()
     }
-    
+
     for key,val of formData
       parent = $('#form > form').find('input[name="address['+ key + ']"]')
       container = parent.closest('.form-group')
@@ -166,21 +169,19 @@ class Navigation
       else if container.find('small')?
         container.find('small').remove()
         container.removeClass('error')
-    
+
     $.ajax({
       type: 'get',
       cache: false,
       url: '/api/prepare'
-      beforeSend: (request) ->
-        request.setRequestHeader("X-User", PitProneClient.user)
-        request.setRequestHeader("X-Token", PitProneClient.token)
+      beforeSend: (request) => @defineHeaders(request)
     }).done( ->
-      
+
     )
-    
+
     unless lock
       $('#form > form').submit()
-    
+
   currentCat: ->
     @current_cat ? @selection_nav.filter('.active').find('a').data('ref')
 
@@ -191,6 +192,10 @@ class Navigation
     res = {}
     res[k] = v for k, v of obj when not predicate k, v
     res
+
+  defineHeaders: (request) ->
+    request.setRequestHeader("X-User", PitProneClient.user)
+    request.setRequestHeader("X-Token", PitProneClient.token)
 
 PitProneClient.visitor.init = () ->
   nav = new Navigation()

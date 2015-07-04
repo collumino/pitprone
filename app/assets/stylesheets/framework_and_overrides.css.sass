@@ -17,13 +17,12 @@ html, body
   border: none
 
 header
-  position: absolute
-  width: 100%
-  z-index: 99
   background-color: transparent
   .navbar-default
     background-color: transparent
-
+  #ingredient_filter
+    a:hover
+      color: white
 #presenter
   color: white
   #get_size
@@ -35,6 +34,9 @@ header
       color: $dark_gray
   #ingredient_selector
     border-color: #8a2712
+    a:hover,  a:focus
+      background-color: transparent
+      border: none
     .active > a
       background-color: $transparent
       color: $dark_gray
@@ -60,6 +62,10 @@ header
       color: $dark_gray
       .badge
         color: $dark_gray
+  #summary
+    background-color: $transparent
+    .final_line
+      border-top: 2px solid $dark_gray
 a
   color: $light
   &:hover

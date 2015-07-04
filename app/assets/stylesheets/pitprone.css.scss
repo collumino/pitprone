@@ -8,6 +8,17 @@ header{
   .navbar{
     height: 15vh;
     margin: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 99;
+  }
+  #ingredient_filter{
+    .describer{
+      background-color: red;
+      color: white;
+      line-height: 50px;
+      padding: 0 5px;
+    }
   }
 }
 main{
@@ -67,9 +78,16 @@ main{
       }
       a{
         display: block;
-//        &.selected{
-//          background-color: rgba(255,150,0,.25);
-//        }
+      }
+    }
+    #summary{
+      padding-bottom: 3em;
+      .final_line{
+        font-weight: bold;
+        padding: .25em 0;
+      }
+      .foot_notes{
+        padding: 1em 0;
       }
     }
     .carousel-indicators{
@@ -98,6 +116,11 @@ form{
     color: red;
     input{
       border-color: red;
+    }
+    small{
+      background-color: red;
+      color: white;
+      padding: 3px;
     }
   }
 }
