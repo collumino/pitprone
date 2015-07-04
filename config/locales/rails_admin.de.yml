@@ -7,7 +7,7 @@ de:
     pagination:
       previous: "&laquo; Vor"
       next: "Zurück &raquo;"
-      truncate: "_"
+      truncate: "…"
     misc:
       filter_date_format: "dd.mm.yy" # a combination of 'dd', 'mm' and 'yy' with any delimiter. No other interpolation will be done!
       search: "Suche"
@@ -124,8 +124,8 @@ de:
         header_for_association_methods: "%{name} [%{association}]"
         encoding_to: "Zielkodierung"
         encoding_to_help: "Kodierung der Ausgabe wählen. Unverändert lassen, um die aktuelle Kodierung beizubehalten: %{name}"
-          skip_header: "Kein Header"
-          skip_header_help: "Auf Attributbeschreibung im Header verzichten"
-          default_col_sep: ","
-          col_sep: "Spalten-Separator"
-          col_sep_help: "Trennzeichen für Spaltenwerte festlegen. Unverändert lassen für Standardwert ('%{value}')" # value is default_col_sep
+        skip_header: "Kein Header"
+        skip_header_help: "Auf Attributbeschreibung im Header verzichten"
+        default_col_sep: ","
+        col_sep: "Spalten-Separator"
+        col_sep_help: "Trennzeichen für Spaltenwerte festlegen. Unverändert lassen für Standardwert ('%{value}')" # value is default_col_sep
