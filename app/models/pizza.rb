@@ -2,6 +2,50 @@ class Pizza < ActiveRecord::Base
   has_many :pizza_items, -> { order("#{PizzaItem.table_name}.created_at ASC") }, dependent: :destroy
   belongs_to :order
 
+  rails_admin do
+    configure :size_factor do
+      pretty_value do
+        util = bindings[:object]
+        %{ #{I18n.t(util.size)} }.html_safe
+      end
+      read_only true # won't be editable in forms (alternatively, hide it in edit section)
+    end
+
+    configure :created_at do
+      pretty_value do
+        util = bindings[:object]
+        %{ #{I18n.l(util.created_at)} }.html_safe
+      end
+      read_only true # won't be editable in forms (alternatively, hide it in edit section)
+    end
+
+    configure :total do
+        pretty_value do
+          util = bindings[:object]
+          %{ #{sprintf("%.02f", util.total)} CHF}.html_safe
+        end
+        read_only true # won't be editable in forms (alternatively, hide it in edit section)
+    end
+
+    configure :state do
+        pretty_value do
+          util = bindings[:object]
+          %{ #{util.order.state}} .html_safe
+        end
+        formatted_value do
+
+        end
+        read_only true # won't be editable in forms (alternatively, hide it in edit section)
+    end
+
+    list do
+      field :order
+      field :size_factor
+      field :total
+      field :state
+      field :created_at
+    end
+  end
 
   class << self
     def measures

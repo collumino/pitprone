@@ -17,14 +17,10 @@ module PdfHelper
   def receiver(address)
     return '' if address.nil?
     [
-      receiver_name(address),
+      "#{address.firstname} #{address.name}",
       address.street,
       address.city,
     ].compact.flatten
-  end
-
-  def receiver_name(address)
-    "#{address.firstname} #{address.name}"
   end
 
   def pos_invoice(positions)
@@ -45,10 +41,6 @@ module PdfHelper
   def float_conversion(float)
     return '' if float.nil?
     sprintf("%0.2f",float)
-  end
-
-  def email_to_use
-    @order.user ? @order.user.email : @order.email
   end
 
   def logo

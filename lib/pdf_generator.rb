@@ -5,9 +5,7 @@ require 'pdf/doc'
 require 'fileutils'
 
 class PdfGenerator
-  BASE_PATH = File.join(Rails.root, 'public', 'pitprone', 'pdf_test') if Rails.env.include?('test')
-  BASE_PATH = File.join(Rails.root, 'public', 'pitprone', 'pdf') if Rails.env.include?('development')
-  BASE_PATH ||= '/var/www/webroot/shared/public/pdf'
+  BASE_PATH = File.join(Rails.root, 'public', 'pitprone', Rails.env.include?('test') ? 'pdf_test' : 'pdf' )
 
   class << self
     def meta(options)
@@ -36,7 +34,7 @@ class PdfGenerator
       pdf.doc_builder
       pdf.save_file
       # [pdf.file_stream, pdf.message_tracker]
-      puts pdf.file_target
+      File.basename(pdf.file_target)
     end
 
   end
@@ -63,10 +61,6 @@ class PdfGenerator
     @doc.render_file self.file_target
     File.size?(self.file_target)
   end
-
-  # def file_stream
-  #   File.read(self.file_target)
-  # end
 
   def target_dir
     working_dir = File.join(BASE_PATH, self.obj.id.to_s)

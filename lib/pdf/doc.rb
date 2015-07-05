@@ -35,24 +35,6 @@ module Pdf
       invoice_context(top)
     end
 
-    def invoice_context(top)
-
-      bounding_box([bounds.right - 180, top], :width => 180, :height => 55.mm) {
-        text "Auftrags Nr. #{@order.id}", :style => :bold, :size => 13
-        move_down 5.mm
-
-        data = []
-        data << ['Datum:', I18n.l(@order.created_at.to_date)]
-        bounding_box([bounds.right - 180, cursor], :width => 180, :height => 15.mm) {
-          table(data, :position => :right, :width => 180, :cell_style => {:border_width => 0, :padding => [0, 3, 1, 0]}) {
-            column(0).style({:width => 90})
-            column(1).style({:align => :right})
-          }
-        }
-        service_contact
-      }
-    end
-
     def build_position_block
       pizza = @order.pizzas.last
       text "Pizza #{I18n.t(pizza.size)}", :style => :bold, :size => 13
@@ -74,10 +56,15 @@ module Pdf
           column(1).style(:align => :right, :font_style => :bold, :width => 100)
         }
       }
-    end
 
-    def line_position(item)
-      @order.line_items.index(item) + 1
+      data = [['inkl. 2.5% MwSt',float_conversion( (@order.total - ( @order.total / 1.025 ).round(2)).round(2) )]]
+
+      bounding_box([bounds.right - 250, cursor], :width => 250) {
+        table(data, :position => :right, :cell_style => {:borders => []}) {
+          column(1).style(:align => :right, :font_style => :bold, :width => 100)
+        }
+      }
+
     end
 
     def finish_position_block
@@ -101,6 +88,25 @@ module Pdf
         draw_text "Auftrags-ID: #{@order.id}", {:at => [0, -41], :size => 8}
         draw_text "Seite #{page_number} von #{page_count}", {:at => [bounds.right - 70, -41], :size => 8, :width => 70}
       end
+    end
+
+
+    def invoice_context(top)
+
+      bounding_box([bounds.right - 180, top], :width => 180, :height => 55.mm) {
+        text "Auftrags Nr. #{@order.id}", :style => :bold, :size => 13
+        move_down 5.mm
+
+        data = []
+        data << ['Datum:', I18n.l(@order.created_at.to_date)]
+        bounding_box([bounds.right - 180, cursor], :width => 180, :height => 15.mm) {
+          table(data, :position => :right, :width => 180, :cell_style => {:border_width => 0, :padding => [0, 3, 1, 0]}) {
+            column(0).style({:width => 90})
+            column(1).style({:align => :right})
+          }
+        }
+        service_contact
+      }
     end
 
     private

@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     delete 'del_ingredient', to: "pizzas#remove_item"
   end
 
+  get '/supervizor/order/:id/process', to: 'visitors#start'
+  get '/supervizor/order/:id/deliver', to: 'visitors#finish'
+  get '/supervizor/order/:id/pdf', to: 'visitors#download'
+
   get 'thank_you', to: 'visitors#thank_you'
   patch 'confirm', to: 'visitors#confirm_verified_order'
   delete 'reset', to: 'visitors#destroy_order'

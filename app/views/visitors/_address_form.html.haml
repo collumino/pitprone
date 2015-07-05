@@ -3,7 +3,7 @@
     Lieferanschrift
   / = form.input :email, placeholder: 'E-Mail'
   = simple_fields_for :address, wrapper: :horizontal_form do |address|
-    = address.input :first_name, placeholder: 'Vorname'
+    = address.input :firstname, placeholder: 'Vorname'
     = address.input :name, placeholder: 'Nachname'
     = address.input :street, placeholder: 'Strasse & Hausnummer'
     = address.input :city, placeholder: 'Ort'

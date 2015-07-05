@@ -3,35 +3,76 @@ class Order < ActiveRecord::Base
   belongs_to :user
   has_many :pizzas, dependent: :destroy
 
+  attr_accessor :next_action
+
   aasm :column => 'state' do
     state :created, :initial => true
-    state :customized
-    state :checked_out
-    state :in_process
+    state :customizing
+    state :waiting_for_process
+    state :waiting_for_delivery
     state :on_delivery
-    state :finsihed
+    state :finished
 
     event :build_pizza do
-      transitions :from => :created, :to => :customized
+      transitions :from => :created, :to => :customizing
     end
 
     event :buy_pizza do
-      transitions :from => :customized, :to => :checked_out, :if => :valid_order?
+      transitions :from => :customizing, :to => :waiting_for_process, :if => :valid_order?
     end
 
     event :bake_pizza do
-      transitions :from => :checked_out, :to => :in_process
+      transitions :from => :waiting_for_process, :to => :waiting_for_delivery
     end
 
     event :deliver_pizza do
-      transitions :from => :in_process, :to => :on_delivery
+      transitions :from => :waiting_for_delivery, :to => :finished
     end
 
-    event :archive_order do
-      transitions :from => :on_delivery, :to => :finsihed
-    end
   end
 
+
+  rails_admin do
+
+    configure :pdf_is_avaliable do
+      pretty_value do
+        util = bindings[:object]
+        if util.waiting_for_delivery? || util.waiting_for_process? || util.finished?
+          "<a href='order/#{util.id}/pdf'>pdf</a>".html_safe
+        else
+          '-'
+        end
+      end
+      read_only true # won't be editable in forms (alternatively, hide it in edit section)
+    end
+
+    configure :next_action do
+      pretty_value do
+        util = bindings[:object]
+        case
+          when util.waiting_for_process?
+            "<a href='order/#{util.id}/process'>Backen</a>".html_safe
+          when util.waiting_for_delivery?
+            "<a href='order/#{util.id}/deliver'>Liefern</a>".html_safe
+          when util.finished?
+            "abgeschlossen".html_safe
+          else
+            '-'
+
+        end
+      end
+      read_only true # won't be editable in forms (alternatively, hide it in edit section)
+    end
+
+    list do
+      field :user
+      field :total
+      field :pdf_is_avaliable
+      field :state
+      field :next_action
+      field :created_at
+    end
+  end
 
   def valid_order?
     self.total > 0 && self.user.present? && self.user.address.present? && self.user.address.valid?
@@ -69,7 +110,9 @@ class Order < ActiveRecord::Base
     "#{value} CHF"
   end
 
-
+  def pdf_url
+    File.join( PdfGenerator::BASE_PATH , "#{self.id}" , self.pdf_is_avaliable )
+  end
   private
 
   def calculate

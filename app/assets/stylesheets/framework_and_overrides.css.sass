@@ -6,11 +6,22 @@ $roboto-cond: 'Roboto Condensed', sans-serif
 $light: #f4f1d4
 $dark_gray: #444
 $transparent: rgba(222,222,222,.5)
+$background: #141201
 
 html, body
-  background: white
   font-family: $roboto-cond
   font-size: 13pt
+
+body
+  @include gradient-vertical($background, $background + 33, 0%, 100%)
+  height: 100vh
+
+main
+  color: $light
+  background: asset_url('background-pattern.svg')
+  height: 100vh
+  input
+    color: $background
 
 .navbar-default
   background: white
@@ -70,3 +81,13 @@ a
   color: $light
   &:hover
     color: white
+
+.authform, #final_message
+  box-shadow: 0 0 20px $dark_gray
+  .panel-body, a
+    color: $dark_gray
+
+.authform
+  background-color: white
+  padding: 20px
+  color: $dark_gray
