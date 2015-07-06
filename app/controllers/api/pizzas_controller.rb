@@ -11,7 +11,7 @@ class Api::PizzasController < ActionController::API
     Pizza.transaction do
       pizza = Pizza.new( size_factor: Pizza.weight(params[:size]) )
       @order.pizzas << pizza if pizza.prepare
-      if @order.save
+      if @order.valid?
         @order.recalculate
         render json: { size: I18n.t(pizza.size) , costs: @order.sign_price }.to_json, status: :created
       else
@@ -23,7 +23,7 @@ class Api::PizzasController < ActionController::API
   def add_item
     selected_ingredient = Ingredient.find_by_name(params[:name])
     @order.pizza_in_progress.pizza_items << PizzaItem.new({quantity: 1, ingredient: selected_ingredient})
-    if @order.save
+    if @order.valid?
       @order.build_pizza! if @order.may_build_pizza?
       @order.recalculate
       render json:  { costs: @order.sign_price , added: selected_ingredient, amount: @order.pizza_in_progress.pizza_items.count - Ingredient.default.count }.to_json, status: :created
