@@ -1,20 +1,10 @@
 Pitprone
 ================
 
-This application was generated with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem
-provided by the [RailsApps Project](http://railsapps.github.io/).
+This is a showcase from collumino GmbH, Olten, Switzerland
+The app is a single screen application, so the view is rendered exactly one time.
+It is mainly developed on firefox browser, so if you want have the best view, you have to use this.
 
-Rails Composer is open source and supported by subscribers. Please join RailsApps to support development of Rails Composer.
-
-Problems? Issues?
------------
-
-Need help? Ask on Stack Overflow with the tag 'railsapps.'
-
-Your application contains diagnostics in the README file. Please provide a copy of the README file when reporting any issues.
-
-If the application doesn't work as expected, please [report an issue](https://github.com/RailsApps/rails_apps_composer/issues)
-and include the diagnostics.
 
 Ruby on Rails
 -------------
@@ -24,25 +14,47 @@ This application requires:
 - Ruby 2.2.1
 - Rails 4.2.2
 
-Learn more about [Installing Rails](http://railsapps.github.io/installing-rails.html).
 
 Getting Started
 ---------------
 
-Documentation and Support
+"rake db:create"
+"rake db:migrate"
+"rake db:seed" fills the database with initial data, mainly ingredient list with assigned ingredient properties.
+
+"rails server" starts the application on localhost:3000
+
+
+Documentation
 -------------------------
 
-Issues
+Creating an order has one initial and one final ( placing the order ) server request.
+Anything else is done via AJAX calls in the background.
+
+The API is implemented with a slim middelware stack. The API methods itself are based on JSON.
+Authentication is done with additional HTTP HEADER fields, no session access here. It is based on a user declaration and an assigned API token.
+Syncing data to the actual order happens on a session related instance variable.
+
+The order workflow contains the events
+  :build_pizza
+  :buy_pizza
+  :bake_pizza
+  :deliver_pizza
+
+Selecting and filtering ingredients is done inside the client without any database query on server side.
+
+
+used gems
 -------------
 
-Similar Projects
-----------------
+- aasm : Workflow engine for orders
+- rails_admin: rapid prototyping admin views
+- prawn: is used as pdf generating module
+- bootstrap & jquery: are the base on UI work
+- sass: enables dynamic css generation with variables and more
+- haml: get a cleaner markup
+- coffescript: scripting javascript generation
+- capistrano: does all the deploying stuff
+- mysql: preferred database adapter
 
-Contributing
-------------
 
-Credits
--------
-
-License
--------
