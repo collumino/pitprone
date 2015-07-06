@@ -12,11 +12,6 @@ module ApplicationHelper
     }
   end
 
-  # def hide_or_live_from_size(size)
-  #   return '' if current_pizza.present? && current_pizza.size == size
-  #   'hidden'
-  # end
-
   def key_identifier(key)
     key.downcase.gsub(%r{\s+},'_')
   end
@@ -62,31 +57,6 @@ module ApplicationHelper
 
     link_to( name.html_safe, '#' )
   end
-
-
-  # def generate_ingredient_link(ingredient, hidden, multiplicator, tooltip_options= { title: '' })
-  #   name = content_tag(:span , class: 'text'){ ingredient.name }
-  #   name += content_tag( :span, class: 'price pull-right' ){ number_to_currency(ingredient.price * multiplicator) }
-  #
-  #   if ingredient.owns_add_ons.any?
-  #     title = 'enthält ' + ingredient.owns_add_ons.collect{|sym| I18n.t(sym) }.join(', ')
-  #     tooltip_options.merge!({title: title,  data: { toggle: 'tooltip', placement: 'bottom' }, class: 'info glyphicon glyphicon-info-sign pull-right' })
-  #     name += content_tag( :span , tooltip_options ){}
-  #   end
-  #
-  #   if ingredient_is_selected?(ingredient)
-  #     name = content_tag( :span , class: 'glyphicon glyphicon-remove-circle' ){} + name
-  #   end
-  #
-  #   link_to( name.html_safe, '#' , class: generate_class_tags(hidden, ingredient))
-  # end
-
-  # def generate_class_tags( hide_requested, ingredient )
-  #   collect = ['selectable']
-  #   collect << 'selected' if ingredient_is_selected?(ingredient)
-  #   collect << 'hidden' if hide_requested && ! ingredient_is_selected?(ingredient)
-  #   collect.join(' ')
-  # end
 
   def ingredient_is_selected?(ingredient)
     return false unless current_pizza

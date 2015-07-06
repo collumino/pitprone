@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   def current_or_guest_user
     if current_user
       if session[:guest_user_id] && session[:guest_user_id] != current_user.id
-        logging_in
+
         guest_user(with_retry = false).try(:destroy)
         session[:guest_user_id] = nil
       end
@@ -34,17 +34,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-  # called (once) when the user logs in, insert any code your application needs
-  # to hand off from guest_user to current_user.
-  def logging_in
-    # For example:
-    # guest_comments = guest_user.comments.all
-    # guest_comments.each do |comment|
-      # comment.user_id = current_user.id
-      # comment.save!
-    # end
-  end
 
   def create_guest_user
     u = User.create(:name => "guest", :email => "guest_#{Time.now.to_i}#{rand(100)}@pitprone.ch")

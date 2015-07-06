@@ -1,8 +1,8 @@
 #presenter.carousel.slide{ data: { ride: "carousel" , wrap: 'false', interval: 'false', user: @user.email , token: @user.authentication_token }}
   .carousel-inner{role: 'listbox'}
     .item.active#select
-      .container
-        .carousel_body
+      .carousel_body
+        .container
           #get_size
             = create_or_update_size
     .item#configure
