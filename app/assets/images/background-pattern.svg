@@ -13,20 +13,20 @@
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(20)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(40)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(60)"/>
-    <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(80)"/>
+    <rect width="2000%" height="2000%" fill-opacity="0.015" fill="#ffffff" transform="rotate(80)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(100)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(120)"/>
-    <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(140)"/>
+    <rect width="2000%" height="2000%" fill-opacity="0.02" fill="#ffffff" transform="rotate(140)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(160)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(180)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(200)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(220)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(240)"/>
     <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(260)"/>
-    <rect width="2000%" height="2000%" fill-opacity="0.03" fill="#ffffff" transform="rotate(280)"/>
-    <rect width="2000%" height="2000%" fill-opacity="0.02" fill="#ffffff" transform="rotate(300)"/>
-    <rect width="2000%" height="2000%" fill-opacity="0.02" fill="#ffffff" transform="rotate(320)"/>
-    <rect width="2000%" height="2000%" fill-opacity="0.02" fill="#ffffff" transform="rotate(340)"/>
-    <rect width="2000%" height="2000%" fill-opacity="0.02" fill="#ffffff" transform="rotate(360)"/>
+    <rect width="2000%" height="2000%" fill-opacity="0.02" fill="#ffffff" transform="rotate(280)"/>
+    <rect width="2000%" height="2000%" fill-opacity="0.015" fill="#ffffff" transform="rotate(300)"/>
+    <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(320)"/>
+    <rect width="2000%" height="2000%" fill-opacity="0.015" fill="#ffffff" transform="rotate(340)"/>
+    <rect width="2000%" height="2000%" fill-opacity="0.01" fill="#ffffff" transform="rotate(360)"/>
   </svg>
 </svg>
