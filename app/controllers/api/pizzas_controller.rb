@@ -3,7 +3,7 @@ class Api::PizzasController < ActionController::API
 
   # shows current pizza with all items
   def index
-    render json: { size: I18n.t(@order.pizza_in_progress.size) , costs: con2curr( @order.pizza_in_progress.total ), items: reduced_pizza_items }.to_json, status: :ok
+    render json: { size: I18n.t(@order.pizza_in_progress.size || '?') , costs: con2curr( @order.pizza_in_progress.total ), items: reduced_pizza_items }.to_json, status: :ok
   end
 
   # creating pizza
@@ -84,6 +84,7 @@ class Api::PizzasController < ActionController::API
   end
 
   def con2curr(price)
+    price ||= 0.0
     "#{sprintf('%.02f', price.round(2) )} CHF"
   end
 
