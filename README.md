@@ -3,7 +3,7 @@ Pitprone
 
 This is a showcase from collumino GmbH, Olten, Switzerland
 The app is a single screen application, so the view is rendered exactly one time.
-It is mainly developed on firefox browser, so if you want have the best view, you have to use this.
+It is mainly developed on latest firefox browser, so if you want have the best view, you have to use this.
 
 
 Ruby on Rails
@@ -33,7 +33,7 @@ Anything else is done via AJAX calls in the background.
 
 The API is implemented with a slim middelware stack. The API methods itself are based on JSON.
 Authentication is done with additional HTTP HEADER fields, no session access here. It is based on a user declaration and an assigned API token.
-Syncing data to the actual order happens on a session related instance variable.
+Syncing data to the actual order happens on a user related instance variable.
 
 The order workflow contains the events
   :build_pizza
